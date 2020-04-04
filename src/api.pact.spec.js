@@ -48,7 +48,8 @@ describe("API Pact test", () => {
                     body: eachLike({
                         id: "07",
                         type: "CREDIT_CARD",
-                        name: "Gem Visa"
+                        name: "Gem Visa",
+                        new: "field"
                     }),
                 },
             });
@@ -59,7 +60,7 @@ describe("API Pact test", () => {
             const product = await api.getAllProducts();
 
             expect(product).toStrictEqual([
-                {"id": "07", "name": "Gem Visa", "type": "CREDIT_CARD"}
+                {"id": "07", "name": "Gem Visa", "type": "CREDIT_CARD", "new": "field"}
             ]);
         });
 
