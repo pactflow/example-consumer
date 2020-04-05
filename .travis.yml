@@ -18,6 +18,7 @@ script:
 jobs:
   include:
     - {}
+    - env: BETHTEST=bethtest
   stages:
   - name: deploy
     if: branch = spike/travis AND repo = pactflow/example-consumer AND NOT env(PACT_URL) IS present
