@@ -14,7 +14,6 @@ all: test
 ## ====================
 
 ci: docker_pull setup_pactflow test
-	@if [ "${TRAVIS_BRANCH}" == "master" ]; then echo "Attempting to deploy" && make deploy; else echo "Not deploying as not on master branch"; fi
 
 ## =====================
 ## Pactflow set up tasks
