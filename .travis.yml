@@ -12,13 +12,11 @@ env:
 before_script:
   - echo "installing"
 
-jobs:
-  include:
-    stages:
-    - name: test
-      script:
-      - echo "testing"
-    - name: deploy
-      if: branch = master AND repo = pactflow/example-consumer AND NOT env(PACT_URL) IS present
-      script:
-      - echo "deploying"
+script:
+  - echo "testing"
+
+stages:
+- name: deploy
+  if: branch = spike/travis AND repo = pactflow/example-consumer AND NOT env(PACT_URL) IS present
+  script:
+  - echo "deploying"
