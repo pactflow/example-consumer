@@ -4,7 +4,7 @@
 
 [![pactflow-example-consumer/pactflow-example-provider Pact Status](https://telegacom.pact.dius.com.au/pacts/provider/pactflow-example-provider/consumer/pactflow-example-consumer/latest/badge.svg?label=provider)](https://telegacom.pact.dius.com.au/pacts/provider/pactflow-example-provider/consumer/pactflow-example-consumer/latest) (latest pact)
 
-[![pactflow-example-consumer/pactflow-example-provider Pact Status](https://test.pact.dius.com.au/matrix/provider/pactflow-example-provider/latest/prod/consumer/pactflow-example-consumer/latest/prod/badge.svg?label=provider)](https://test.pact.dius.com.au/pacts/provider/pactflow-example-provider/consumer/pactflow-example-consumer/latest/prod) (prod/prod pact)
+[![pactflow-example-consumer/pactflow-example-provider Pact Status](https://telegacom.pact.dius.com.au/matrix/provider/pactflow-example-provider/latest/prod/consumer/pactflow-example-consumer/latest/prod/badge.svg?label=provider)](https://telegacom.pact.dius.com.au/pacts/provider/pactflow-example-provider/consumer/pactflow-example-consumer/latest/prod) (prod/prod pact)
 
 This is an example of a Node consumer using Pact to create a consumer driven contract, and sharing it via [Pactflow](https://pactflow.io).
 
