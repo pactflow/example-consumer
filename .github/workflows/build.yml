@@ -11,9 +11,9 @@ jobs:
         with:
           node-version: '12'
       - run: docker pull pactfoundation/pact-cli:latest
-      - name: install
+      - name: Install
         run: npm i
-      - name: build
+      - name: Build
         run: TRAVIS_BRANCH=${TRAVIS_BRANCH:11} make ci
         env:
           PACT_BROKER_TOKEN: ${{ secrets.TEST_PACTFLOW_IO_PACT_BROKER_TOKEN }}
