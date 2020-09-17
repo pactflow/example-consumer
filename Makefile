@@ -102,7 +102,7 @@ create_or_update_pact_changed_webhook:
 	  "https://api.github.com/repos/${GITHUB_ORG}/example-provider/dispatches" \
 	  --header 'Content-Type: application/json' 'Accept: application/vnd.github.everest-preview+json' 'Authorization: Bearer $${user.githubCommitStatusToken}' \
 	  --request POST \
-	  --data '{"event_type": "pact_changed"}' \
+	  --data '{ "event_type": "pact_changed", "client_payload": { "pact_url": "$${pactbroker.pactUrl}" } }' \
 	  --uuid ${PACT_CHANGED_WEBHOOK_UUID} \
 	  --consumer ${PACTICIPANT} \
 	  --contract-content-changed \
