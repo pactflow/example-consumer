@@ -14,7 +14,7 @@ jobs:
       - name: install
         run: npm i
       - name: build
-        run: make ci
+        run: TRAVIS_BRANCH=${TRAVIS_BRANCH:11} make ci
         env:
           PACT_BROKER_TOKEN: ${{ secrets.TEST_PACTFLOW_IO_PACT_BROKER_TOKEN }}
           REACT_APP_API_BASE_URL: http://localhost:8080
