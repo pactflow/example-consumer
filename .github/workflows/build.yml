@@ -18,6 +18,6 @@ jobs:
         env:
           PACT_BROKER_TOKEN: ${{ secrets.TEST_PACTFLOW_IO_PACT_BROKER_TOKEN }}
           REACT_APP_API_BASE_URL: http://localhost:8080
-          PACT_BROKER_BASE_URL: https://test.pact.dius.com.au
+          PACT_BROKER_BASE_URL: https://bethtest-3.pact.dius.com.au
           TRAVIS_COMMIT: ${{ github.sha }}
           TRAVIS_BRANCH: ${{ github.ref }}
