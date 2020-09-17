@@ -10,10 +10,10 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
+      - run: docker pull pactfoundation/pact-cli:latest
+      - run: npm i
       - name:
-        run: |
-          docker pull pactfoundation/pact-cli:latest
-          make ci
+        run: make ci
         env:
           PACT_BROKER_TOKEN: ${{ secrets.TEST_PACTFLOW_IO_PACT_BROKER_TOKEN }}
           REACT_APP_API_BASE_URL: http://localhost:8080
