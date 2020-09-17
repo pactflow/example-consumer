@@ -11,10 +11,13 @@ jobs:
         with:
           node-version: '12'
       - run: docker pull pactfoundation/pact-cli:latest
-      - run: npm i
-      - name:
+      - name: install
+        run: npm i
+      - name: build
         run: make ci
         env:
           PACT_BROKER_TOKEN: ${{ secrets.TEST_PACTFLOW_IO_PACT_BROKER_TOKEN }}
           REACT_APP_API_BASE_URL: http://localhost:8080
           PACT_BROKER_BASE_URL: https://test.pact.dius.com.au
+          TRAVIS_COMMIT: ${{ env.GITHUB_SHA }}
+          TRAVIS_BRANCH: ${{ env.GITHUB_REF }}
