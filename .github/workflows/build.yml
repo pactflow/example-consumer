@@ -24,7 +24,7 @@ jobs:
       - name: Test
         run: make test
       - name: Publish pacts
-        run: TRAVIS_BRANCH=${TRAVIS_BRANCH:11} make pact_publish
+        run: TRAVIS_BRANCH=${TRAVIS_BRANCH:11} make publish_pacts
 
   # Runs on branches as well, so we know the status of our PRs
   can-i-deploy:
