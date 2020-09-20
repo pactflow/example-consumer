@@ -96,20 +96,6 @@ create_or_update_github_webhook:
 test_github_webhook:
 	@curl -v -X POST ${PACT_BROKER_BASE_URL}/webhooks/${GITHUB_WEBHOOK_UUID}/execute -H "Authorization: Bearer ${PACT_BROKER_TOKEN}"
 
-create_or_update_pact_changed_webhook:
-	@"${PACT_CLI}" \
-	  broker create-or-update-webhook \
-	  "https://api.github.com/repos/${GITHUB_ORG}/example-provider/dispatches" \
-	  --header 'Content-Type: application/json' 'Accept: application/vnd.github.everest-preview+json' 'Authorization: Bearer $${user.githubCommitStatusToken}' \
-	  --request POST \
-	  --data '{ "event_type": "pact_changed", "client_payload": { "pact_url": "$${pactbroker.pactUrl}" } }' \
-	  --uuid ${PACT_CHANGED_WEBHOOK_UUID} \
-	  --consumer ${PACTICIPANT} \
-	  --contract-content-changed \
-	  --description "Pact content changed for ${PACTICIPANT}"
-
-test_pact_changed_webhook:
-	@curl -v -X POST ${PACT_BROKER_BASE_URL}/webhooks/${PACT_CHANGED_WEBHOOK_UUID}/execute -H "Authorization: Bearer ${PACT_BROKER_TOKEN}"
 
 ## ======================
 ## Travis CI set up tasks
