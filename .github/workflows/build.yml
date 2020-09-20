@@ -22,7 +22,9 @@ jobs:
       - name: Install
         run: npm i
       - name: Test
-        run: TRAVIS_BRANCH=${TRAVIS_BRANCH:11} make test
+        run: make test
+      - name: Publish pacts
+        run: TRAVIS_BRANCH=${TRAVIS_BRANCH:11} make pact_publish
 
   # Runs on branches as well, so we know the status of our PRs
   can-i-deploy:
