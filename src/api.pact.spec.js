@@ -21,7 +21,7 @@ describe('API Pact test', () => {
 
   describe('retrieving a product', () => {
     test('ID 10 exists', async () => {
-      // set up Pact interactions
+      // Arrange
       const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees' }
 
       await mockProvider.addInteraction({
@@ -43,9 +43,8 @@ describe('API Pact test', () => {
         },
       });
 
+      // Act
       const api = new API(mockProvider.mockService.baseUrl);
-
-      // make request to Pact mock server
       const product = await api.getProduct('10');
 
       // assert that we got the expected response
