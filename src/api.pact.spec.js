@@ -1,4 +1,3 @@
-import path from 'path';
 import { Pact } from '@pact-foundation/pact';
 import { API } from './api';
 import { eachLike, like, regex } from '@pact-foundation/pact/dsl/matchers';
@@ -6,10 +5,6 @@ import { eachLike, like, regex } from '@pact-foundation/pact/dsl/matchers';
 const mockProvider = new Pact({
   consumer: 'pactflow-example-consumer',
   provider: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider',
-  log: path.resolve(process.cwd(), 'logs', 'pact.log'),
-  logLevel: 'warn',
-  dir: path.resolve(process.cwd(), 'pacts'),
-  spec: 2
 });
 
 describe('API Pact test', () => {
@@ -37,7 +32,7 @@ describe('API Pact test', () => {
         willRespondWith: {
           status: 200,
           headers: {
-            'Content-Type': regex({generate: 'application/json; charset=utf-8', matcher: '^application\/json'}),
+            'Content-Type': regex({generate: 'application/json; charset=utf-8', matcher: 'application/json;?.*'}),
           },
           body: like(expectedProduct),
         },
@@ -93,7 +88,7 @@ describe('API Pact test', () => {
         willRespondWith: {
           status: 200,
           headers: {
-            'Content-Type': regex({generate: 'application/json; charset=utf-8', matcher: '^application\/json'}),
+            'Content-Type': regex({generate: 'application/json; charset=utf-8', matcher: 'application/json;?.*'}),
           },
           body: eachLike(expectedProduct),
         },
