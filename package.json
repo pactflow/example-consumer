@@ -15,9 +15,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "CI=true react-scripts test",
+    "test": "cross-env CI=true react-scripts test",
     "eject": "react-scripts eject",
-    "test:pact": "CI=true react-scripts test --testTimeout 30000 pact.spec.js"
+    "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-react-app": "^5.2.1",
