@@ -80,7 +80,7 @@ describe("Product API", () => {
       }
       await provider.addInteraction(interaction);
       await provider.addInteraction(interaction2);
-    })
+    });
 
     it("returns the correct response", async () => {
       const urlAndPort = {
