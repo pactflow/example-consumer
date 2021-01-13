@@ -1,106 +1,111 @@
-import { Pact } from '@pact-foundation/pact';
-import { API } from './api';
-import { eachLike, like, regex } from '@pact-foundation/pact/dsl/matchers';
+const path = require("path")
+const chai = require("chai")
+const { Pact, Publisher } = require("@pact-foundation/pact")
+const expect = chai.expect;
+import API from "./api";
 
-const mockProvider = new Pact({
-  consumer: 'pactflow-example-consumer',
-  provider: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider',
-});
 
-describe('API Pact test', () => {
-  beforeAll(() => mockProvider.setup());
+describe("Product API", () => {
+  let url = "http://localhost";
+  const port = 8080;
 
-  afterEach(() => mockProvider.verify());
+  const provider = new Pact({
+    consumer: "MyConsumer",
+    provider: "MyProvider",
+    log: path.resolve(process.cwd(), "logs", "pact.log"),
+    dir: path.resolve(process.cwd(), "pacts"),
+    pactfileWriteMode: "merge",
+    spec: 2,
+    url: url,
+    port: port
+  });
 
-  afterAll(() => mockProvider.finalize());
+  const opts = {
+    pactBroker: "http://localhost:81",
+    consumerVersion: "9.2",
+    pactFilesOrDirs: [path.resolve(process.cwd(), "pacts")],
+    publishVerificationResults: true,
+    providerVersion: "4.0",
+    providerVersionTag: "test1234"
+  }
 
-  describe('retrieving a product', () => {
-    test('ID 10 exists', async () => {
-      // Arrange
-      const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', color:'red' }
+  // this is the response you expect from your Provider
+  const EXPECTED_BODY = [
+    { id: '09', type: 'CREDIT_CARD', name: 'Gem Visa', version: 'v1' },
+    { id: '10', type: 'CREDIT_CARD', name: '28 Degrees', version: 'v1' },
+    { id: '11', type: 'PERSONAL_LOAN', name: 'MyFlexiPay', version: 'v2' }
+  ];
 
-      await mockProvider.addInteraction({
-        state: 'a product with ID 10 exists',
-        uponReceiving: 'a request to get a product',
+  // Setup the provider
+  before(() => provider.setup());
+
+  describe("get /products", () => {
+    before(async () => {
+      const interaction = {
+        state: "i have a list of products",
+        uponReceiving: "a request for all products",
         withRequest: {
-          method: 'GET',
-          path: '/product/10',
+          method: "GET",
+          path: "/products",
           headers: {
-            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
+            Accept: "application/json",
           },
         },
         willRespondWith: {
           status: 200,
           headers: {
-            'Content-Type': regex({generate: 'application/json; charset=utf-8', matcher: 'application/json;?.*'}),
+            "Content-Type": "application/json; charset=utf-8",
           },
-          body: like(expectedProduct),
+          body: EXPECTED_BODY,
         },
-      });
+      }
 
-      // Act
-      const api = new API(mockProvider.mockService.baseUrl);
-      const product = await api.getProduct('10');
+      const interaction2 = {
+        state: "i have a list of products",
+        uponReceiving: "a request for product 10",
+        withRequest: {
+          method: "GET",
+          path: "/product/10",
+          headers: {
+            Accept: "application/json",
+          },
+        },
+        willRespondWith: {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: EXPECTED_BODY[1],
+        },
+      }
+      await provider.addInteraction(interaction);
+      await provider.addInteraction(interaction2);
+    })
 
-      // assert that we got the expected response
-      expect(product).toStrictEqual(expectedProduct);
+    it("returns the correct response", async () => {
+      const urlAndPort = {
+        url: url,
+        port: port,
+      }
+      let res = await API.getAllProducts(urlAndPort);
+      expect(res.data).to.deep.equal(EXPECTED_BODY);
     });
 
-    test('product does not exist', async () => {
-
-        // set up Pact interactions
-        await mockProvider.addInteraction({
-          state: 'a product with ID 11 does not exist',
-          uponReceiving: 'a request to get a product',
-          withRequest: {
-            method: 'GET',
-            path: '/product/11',
-            headers: {
-              'Authorization': like('Bearer 2019-01-14T11:34:18.045Z')
-            }
-          },
-          willRespondWith: {
-            status: 404
-          },
-        });
-
-        const api = new API(mockProvider.mockService.baseUrl);
-
-        // make request to Pact mock server
-        await expect(api.getProduct('11')).rejects.toThrow('Request failed with status code 404');
+    it("returns the correct response 2", async () => {
+      const urlAndPort = {
+        url: url,
+        port: port,
+      }
+      let res = await API.getProduct(urlAndPort);
+      expect(res.data).to.deep.equal(EXPECTED_BODY[1]);
     });
   });
-  describe('retrieving products', () => {
-    test('products exists', async () => {
-      // set up Pact interactions
-      const expectedProduct = { id: '10', type: 'CREDIT_CARD', name: '28 Degrees' }
 
-      await mockProvider.addInteraction({
-        state: 'products exist',
-        uponReceiving: 'a request to get all products',
-        withRequest: {
-          method: 'GET',
-          path: '/products',
-          headers: {
-            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
-          },
-        },
-        willRespondWith: {
-          status: 200,
-          headers: {
-            'Content-Type': regex({generate: 'application/json; charset=utf-8', matcher: 'application/json;?.*'}),
-          },
-          body: eachLike(expectedProduct),
-        },
-      });
-
-      const api = new API(mockProvider.mockService.baseUrl);
-
-      // make request to Pact mock server
-      const products = await api.getAllProducts()
-
-      // assert that we got the expected response
-      expect(products).toStrictEqual([expectedProduct]);
-    });
+  after("Verify, finalize and publish Pacts", () => {
+    provider.verify()
+    provider.finalize();  
+    // new Publisher(opts).publishPacts().then(() => {
+    //   console.log("Pacts published")
+    // })
   });
 });

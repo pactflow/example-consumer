@@ -3,6 +3,37 @@ import adapter from "axios/lib/adapters/http";
 
 axios.defaults.adapter = adapter;
 
+exports.getAllProducts = async endpoint => {
+  const url = endpoint.url
+  const port = endpoint.port
+
+  let api = await axios.request({
+    method: "GET",
+    baseURL: `${url}:${port}`,
+    url: "/products",
+    headers: { Accept: "application/json" },
+  });
+
+  return api;
+  
+}
+
+exports.getProduct = async (endpoint, id) => {
+  const url = endpoint.url
+  const port = endpoint.port
+
+  let api = await axios.request({
+    method: "GET",
+    baseURL: `${url}:${port}`,
+    url: "/product/10",
+    headers: { Accept: "application/json" },
+  });
+
+  return api;
+
+}
+
+/*
 export class API {
   constructor(url) {
     if (url === undefined || url === "") {
@@ -25,23 +56,17 @@ export class API {
     return "Bearer " + new Date().toISOString()
   }
 
-  async getAllProducts() {
-    return axios.get(this.withPath("/products"), {
-      headers: {
-        "Authorization": this.generateAuthToken()
-      }
-    })
+ async getAllProducts(path = "/products") {
+    return axios.get(`${this.url}${path}`)
     .then(r => r.data);
   }
 
-  async getProduct(id) {
-    return axios.get(this.withPath("/product/" + id), {
-      headers: {
-        "Authorization": this.generateAuthToken()
-      }
-    })
+ async getProduct(id) {
+    return axios.get(this.withPath("/product/" + id))
     .then(r => r.data);
   }
 }
 
 export default new API(process.env.REACT_APP_API_BASE_URL);
+
+*/
