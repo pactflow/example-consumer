@@ -25,13 +25,14 @@ ci: test publish_pacts can_i_deploy $(DEPLOY_TARGET)
 # set as if it was on Travis CI.
 # Use this for quick feedback when playing around with your workflows.
 fake_ci: .env
-	CI=true \
+	@CI=true \
 	TRAVIS_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
 	TRAVIS_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	REACT_APP_API_BASE_URL=http://localhost:8080 \
 	make ci
 
 publish_pacts: .env
+	@echo "\n========== STAGE: publish pacts ==========\n"
 	@"${PACT_CLI}" publish ${PWD}/pacts --consumer-app-version ${TRAVIS_COMMIT} --tag ${TRAVIS_BRANCH}
 
 ## =====================
@@ -39,6 +40,7 @@ publish_pacts: .env
 ## =====================
 
 test: .env
+	@echo "\n========== STAGE: test ==========\n"
 	npm run test:pact
 
 ## =====================
@@ -51,6 +53,7 @@ no_deploy:
 	@echo "Not deploying as not on master branch"
 
 can_i_deploy: .env
+	@echo "\n========== STAGE: can-i-deploy? ==========\n"
 	@"${PACT_CLI}" broker can-i-deploy \
 	  --pacticipant ${PACTICIPANT} \
 	  --version ${TRAVIS_COMMIT} \
@@ -59,6 +62,7 @@ can_i_deploy: .env
 	  --retry-interval 10
 
 deploy_app:
+	@echo "\n========== STAGE: deploy ==========\n"
 	@echo "Deploying to prod"
 
 tag_as_prod: .env
