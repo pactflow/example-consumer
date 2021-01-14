@@ -1,6 +1,7 @@
 import { Pact } from '@pact-foundation/pact';
 import { API } from './api';
 import { eachLike, like, regex } from '@pact-foundation/pact/dsl/matchers';
+import { Product } from './product';
 
 const mockProvider = new Pact({
   consumer: 'pactflow-example-consumer',
@@ -9,9 +10,7 @@ const mockProvider = new Pact({
 
 describe('API Pact test', () => {
   beforeAll(() => mockProvider.setup());
-
   afterEach(() => mockProvider.verify());
-
   afterAll(() => mockProvider.finalize());
 
   describe('retrieving a product', () => {
@@ -43,7 +42,7 @@ describe('API Pact test', () => {
       const product = await api.getProduct('10');
 
       // assert that we got the expected response
-      expect(product).toStrictEqual(expectedProduct);
+      expect(product).toStrictEqual(new Product(expectedProduct));
     });
 
     test('product does not exist', async () => {
@@ -100,7 +99,7 @@ describe('API Pact test', () => {
       const products = await api.getAllProducts()
 
       // assert that we got the expected response
-      expect(products).toStrictEqual([expectedProduct]);
+      expect(products).toStrictEqual([new Product(expectedProduct)]);
     });
   });
 });

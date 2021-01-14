@@ -1,5 +1,6 @@
 import axios from 'axios';
 import adapter from "axios/lib/adapters/http";
+import { Product } from './product';
 
 axios.defaults.adapter = adapter;
 
@@ -31,7 +32,7 @@ export class API {
         "Authorization": this.generateAuthToken()
       }
     })
-    .then(r => r.data);
+    .then(r => r.data.map(p => new Product(p)));
   }
 
   async getProduct(id) {
@@ -40,7 +41,7 @@ export class API {
         "Authorization": this.generateAuthToken()
       }
     })
-    .then(r => r.data);
+    .then(r => new Product(r.data));
   }
 }
 
