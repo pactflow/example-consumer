@@ -10,14 +10,17 @@
     "react-router": "latest",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
-    "spectre.css": "^0.5.9"
+    "spectre.css": "^0.5.9",
+    "swagger-mock-validator": "^10.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test",
     "eject": "react-scripts eject",
-    "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js"
+    "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js",
+    "test:nock": "cross-env CI=true react-scripts test --testTimeout 30000 nock.spec.js",
+    "test:record": "cross-env CI=true react-scripts test --testTimeout 30000 record.spec.js"
   },
   "eslintConfig": {
     "extends": "react-app"

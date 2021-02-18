@@ -1,0 +1,80 @@
+[
+    {
+        "scope": "http://localhost:3000",
+        "method": "GET",
+        "path": "/products",
+        "body": "",
+        "status": 200,
+        "response": [
+            {
+                "id": "09",
+                "type": "CREDIT_CARD",
+                "name": "Gem Visa",
+                "version": "v1",
+                "price": 99.99
+            },
+            {
+                "id": "10",
+                "type": "CREDIT_CARD",
+                "name": "28 Degrees",
+                "version": "v1",
+                "price": 49.49
+            },
+            {
+                "id": "11",
+                "type": "PERSONAL_LOAN",
+                "name": "MyFlexiPay",
+                "version": "v2",
+                "price": 16.5
+            }
+        ],
+        "rawHeaders": [
+            "X-Powered-By",
+            "Express",
+            "Access-Control-Allow-Origin",
+            "*",
+            "Content-Type",
+            "application/json; charset=utf-8",
+            "Content-Length",
+            "246",
+            "ETag",
+            "W/\"f6-w3kK4moDvOGs6FOpA/LePl4PlXg\"",
+            "Date",
+            "Wed, 17 Feb 2021 13:20:37 GMT",
+            "Connection",
+            "close"
+        ],
+        "responseIsBinary": false
+    },
+    {
+        "scope": "http://localhost:3000",
+        "method": "GET",
+        "path": "/product/10",
+        "body": "",
+        "status": 200,
+        "response": {
+            "id": "10",
+            "type": "CREDIT_CARD",
+            "name": "28 Degrees",
+            "version": "v1",
+            "price": 49.49
+        },
+        "rawHeaders": [
+            "X-Powered-By",
+            "Express",
+            "Access-Control-Allow-Origin",
+            "*",
+            "Content-Type",
+            "application/json; charset=utf-8",
+            "Content-Length",
+            "81",
+            "ETag",
+            "W/\"51-/fCT2fY74qwFWk1CnZqdJTmzvZg\"",
+            "Date",
+            "Wed, 17 Feb 2021 13:20:37 GMT",
+            "Connection",
+            "close"
+        ],
+        "responseIsBinary": false
+    }
+]

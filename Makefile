@@ -20,6 +20,7 @@ all: test
 ## ====================
 
 ci: test publish_pacts can_i_deploy $(DEPLOY_TARGET)
+ci_nock: test_nock publish_pacts can_i_deploy $(DEPLOY_TARGET)
 
 # Run the ci target from a developer machine with the environment variables
 # set as if it was on Travis CI.
@@ -31,6 +32,13 @@ fake_ci: .env
 	REACT_APP_API_BASE_URL=http://localhost:8080 \
 	make ci
 
+fake_ci_nock: .env
+	@CI=true \
+	TRAVIS_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
+	TRAVIS_BRANCH=`git rev-parse --abbrev-ref HEAD` \
+	REACT_APP_API_BASE_URL=http://localhost:8080 \
+	make ci_nock
+
 publish_pacts: .env
 	@echo "\n========== STAGE: publish pacts ==========\n"
 	@"${PACT_CLI}" publish ${PWD}/pacts --consumer-app-version ${TRAVIS_COMMIT} --tag ${TRAVIS_BRANCH}
@@ -40,8 +48,12 @@ publish_pacts: .env
 ## =====================
 
 test: .env
-	@echo "\n========== STAGE: test ==========\n"
+	@echo "\n========== STAGE: test (pact) ==========\n"
 	npm run test:pact
+
+test_nock: .env
+	@echo "\n========== STAGE: test (nock) ==========\n"
+	npm run test:nock
 
 ## =====================
 ## Deploy tasks
