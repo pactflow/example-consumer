@@ -130,3 +130,10 @@ travis_encrypt_pact_broker_token:
 
 .env:
 	touch .env
+
+output:
+	mkdir -p ./pacts
+	touch ./pacts/tmp
+
+clean: output
+	rm pacts/*

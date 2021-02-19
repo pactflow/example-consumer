@@ -5,7 +5,7 @@ const nockBack = require("nock").back;
 nockBack.fixtures = "fixtures";
 
 describe("API Nock Tests", () => {
-  test("nock recordings", (done) => {
+  test("nock replay tests", (done) => {
     // reuse the nock fixture
     nockBack(
       "nock.json",

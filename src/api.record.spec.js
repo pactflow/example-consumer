@@ -1,12 +1,9 @@
 import { API } from "./api";
 import * as fs from "fs";
-import * as path from "path";
 
-//
 const nockBack = require("nock").back;
 nockBack.setMode("record");
 nockBack.fixtures = "fixtures"
-
 
 describe("API Nock Tests", () => {
   test("nock recordings", () => {
