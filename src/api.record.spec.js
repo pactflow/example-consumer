@@ -53,7 +53,6 @@ export const convertNockToPact = () => {
       },
     };
   });
-  console.log(scopes);
 
   fs.writeFileSync("./pacts/nock-contract.json", JSON.stringify(pact));
   return scopes;

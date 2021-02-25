@@ -6,7 +6,7 @@ nockBack.setMode("lockdown"); // don't allow new recording!
 nockBack.fixtures = "fixtures";
 
 describe("API Nock Tests", () => {
-  // if nock tests pass, convert the fixture file into a pact contracct
+  // convert the fixture file into a pact contract after testing
   afterAll(() => convertNockToPact())
 
   test("nock replay tests", (done) => {
@@ -21,6 +21,7 @@ describe("API Nock Tests", () => {
         expect(products.length).toBeGreaterThan(0);
 
         // Test 2
+        // Comment this out, and the test should fail, not serialising the contract
         const product = await api.getProduct("10");
         expect(product.id).toBe("10");
 

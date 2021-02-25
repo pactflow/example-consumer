@@ -52,8 +52,12 @@ NOTE: The nock recordings are already in the project, in the `./fixtures` direct
 * `make test_nock` - run the nock test locally
 * `make fake_ci_nock` - run the nock version of the CI process locally
 
-#### Re-record
+#### Re-record nock fixtures
 
 You first need to start up the provider API in order to obtain nock recordings. The API must be running on `http://localhost:3000` for this step to work.
 
+For the default [Provider](https://github.com/pactflow/example-collaborative-contracts-provider) designed for this workshop, you can simply start it up by running `npm start` in the root directory of the provider project, as per its README.
+
+
 * `npm run test:record` - this will run nock in record mode, and your api client will issue real requests to the API
+* `npm run test:nock` - run the nock tests in replay only mode, validating all stubs were used in the process, and writing a pact file if successful
