@@ -46,6 +46,14 @@ To be able to run some of the commands locally, you will need to export the foll
 
 ### Nock (record/replay example)
 
+NOTE: The nock recordings are already in the project, in the `./fixtures` directory, see below for how to obtain these recordings.
+
 * `make clean` - ensure previous pacts are cleared
 * `make test_nock` - run the nock test locally
 * `make fake_ci_nock` - run the nock version of the CI process locally
+
+#### Re-record
+
+You first need to start up the provider API in order to obtain nock recordings. The API must be running on `http://localhost:3000` for this step to work.
+
+* `npm run test:record` - this will run nock in record mode, and your api client will issue real requests to the API

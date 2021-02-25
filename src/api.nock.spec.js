@@ -1,15 +1,18 @@
 import { API } from "./api";
-import { convertToPact } from "./api.record.spec";
+import { convertNockToPact } from "./api.record.spec";
 
 const nockBack = require("nock").back;
+nockBack.setMode("lockdown"); // don't allow new recording!
 nockBack.fixtures = "fixtures";
 
 describe("API Nock Tests", () => {
+  // if nock tests pass, convert the fixture file into a pact contracct
+  afterAll(() => convertNockToPact())
+
   test("nock replay tests", (done) => {
     // reuse the nock fixture
     nockBack(
       "nock.json",
-      { afterRecord: convertToPact },
       async function(nockDone ) {
         const api = new API("http://localhost:3000");
 

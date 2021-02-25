@@ -1,14 +1,16 @@
 import { API } from "./api";
+import * as path from "path";
 import * as fs from "fs";
 
 const nockBack = require("nock").back;
-nockBack.setMode("record");
-nockBack.fixtures = "fixtures"
+nockBack.setMode("record"); // record interactions
+nockBack.fixtures = "fixtures" // fixture files will be stored in ./fixtures/<fixture>.json
+const filename = "nock.json"
 
 describe("API Nock Tests", () => {
   test("nock recordings", () => {
     // recording of the fixture
-    return nockBack("nock.json", { afterRecord: convertToPact }).then(
+    return nockBack(filename).then(
       async ({ nockDone }) => {
         const api = new API("http://localhost:3000");
 
@@ -23,7 +25,9 @@ describe("API Nock Tests", () => {
 });
 
 // Crude converter from a nock fixture to a pactfile
-export const convertToPact = (scopes) => {
+export const convertNockToPact = () => {
+  const scopes = require(path.join(__dirname, "..", nockBack.fixtures, filename))
+
   const pact = {
     consumer: { name: "pactflow-example-consumer" },
     provider: { name: "collaborative-contracts-provider" },
