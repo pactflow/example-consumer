@@ -42,6 +42,14 @@ export class API {
     })
     .then(r => r.data);
   }
+
+  async getPrice(id){
+    return axios.get(this.withPath("/price/" +  id), {
+      headers: {
+        "Authorization": this.generateAuthToken(),
+      }
+    }).then(r => r.data);
+  }
 }
 
 export default new API(process.env.REACT_APP_API_BASE_URL);
