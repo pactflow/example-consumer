@@ -58,8 +58,9 @@ To be able to run some of the commands locally, you will need to export the foll
 
 * `PACT_BROKER_TOKEN`: a valid [API token](https://docs.pactflow.io/docs/getting-started/#configuring-your-api-token) for Pactflow
 * `PACT_BROKER_BASE_URL`: a fully qualified domain name with protocol to your pact broker e.g. https://testdemo.pactflow.io
-* `PACT_PROVIDER=collaborative-contracts-provider`: this changes the default provider
-
+* `PACT_PROVIDER=collaborative-contracts-provider`: this changes the default provider to the Dredd based provider (https://github.com/pactflow/example-provider-dredd)
+* `PACT_PROVIDER=pactflow-example-provider-postman`: ... Postman (https://github.com/pactflow/example-provider-postman)
+* `PACT_PROVIDER=pactflow-example-provider-restassured`: ... Rest Assured (https://github.com/pactflow/example-provider-restassured)
 ### Usage
 
 #### Pact use case
