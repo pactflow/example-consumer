@@ -8,9 +8,9 @@
 
 This is an example of a Node consumer using Pact to create a consumer driven contract, and sharing it via [Pactflow](https://pactflow.io).
 
-It implements a "Product" website, to demonstrate the new bi-directional contract capability of Pactflow (previously referred to as Provider driven contracts, or collaborative contracts). See the [Provider](https://github.com/pactflow/example-collaborative-contracts-provider) counterpart.
+It implements a "Product" website, to demonstrate the new bi-directional contract capability of Pactflow (previously referred to as Provider driven contracts, or collaborative contracts). See the [Provider](https://github.com/pactflow/example-pactflow-example-provider-dredd) counterpart.
 
-It is using a public tenant on Pactflow, which you can access [here](https://test.pact.dius.com.au) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`. The latest version of the Example Consumer/Example Provider pact is published [here](https://test.pact.dius.com.au/pacts/provider/pactflow-example-collaborative-contracts-provider/consumer/pactflow-example-consumer/latest).
+It is using a public tenant on Pactflow, which you can access [here](https://test.pact.dius.com.au) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`. The latest version of the Example Consumer/Example Provider pact is published [here](https://test.pact.dius.com.au/pacts/provider/pactflow-example-pactflow-example-provider-dredd/consumer/pactflow-example-consumer/latest).
 
 In the following diagram, you can see how the consumer testing process works - it's the same as the current Pact process! (We do show an alternative using Nock's record/replay functionality)
 
@@ -36,7 +36,7 @@ To be able to run some of the commands locally, you will need to export the foll
 
 * `PACT_BROKER_TOKEN`: a valid [API token](https://docs.pactflow.io/docs/getting-started/#configuring-your-api-token) for Pactflow
 * `PACT_BROKER_BASE_URL`: a fully qualified domain name with protocol to your pact broker e.g. https://testdemo.pactflow.io
-* `PACT_PROVIDER=collaborative-contracts-provider`: this changes the default provider
+* `PACT_PROVIDER=pactflow-example-provider-dredd`: this changes the default provider
 
 ### Usage
 
@@ -57,7 +57,7 @@ NOTE: The nock recordings are already in the project, in the `./fixtures` direct
 
 You first need to start up the provider API in order to obtain nock recordings. The API must be running on `http://localhost:3000` for this step to work.
 
-For the default [Provider](https://github.com/pactflow/example-collaborative-contracts-provider) designed for this workshop, you can simply start it up by running `npm start` in the root directory of the provider project, as per its README.
+For the default [Provider](https://github.com/pactflow/example-pactflow-example-provider-dredd) designed for this workshop, you can simply start it up by running `npm start` in the root directory of the provider project, as per its README.
 
 
 * `npm run test:record` - this will run nock in record mode, and your api client will issue real requests to the API
