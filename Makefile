@@ -23,7 +23,7 @@ ci: test publish_pacts can_i_deploy $(DEPLOY_TARGET)
 ci_nock: test_nock publish_pacts can_i_deploy $(DEPLOY_TARGET)
 
 # Run the ci target from a developer machine with the environment variables
-# set as if it was on Travis CI.
+# set as if it was on CI.
 # Use this for quick feedback when playing around with your workflows.
 fake_ci: .env
 	@CI=true \
@@ -112,17 +112,6 @@ create_or_update_github_commit_status_webhook:
 test_github_webhook:
 	@curl -v -X POST ${PACT_BROKER_BASE_URL}/webhooks/${GITHUB_WEBHOOK_UUID}/execute -H "Authorization: Bearer ${PACT_BROKER_TOKEN}"
 
-
-## ======================
-## Travis CI set up tasks
-## ======================
-
-travis_login:
-	@docker run --rm -v ${HOME}/.travis:/root/.travis -it lirantal/travis-cli login --pro
-
-# Requires PACT_BROKER_TOKEN to be set
-travis_encrypt_pact_broker_token:
-	@docker run --rm -v ${HOME}/.travis:/root/.travis -v ${PWD}:${PWD} --workdir ${PWD} lirantal/travis-cli encrypt --pro PACT_BROKER_TOKEN="${PACT_BROKER_TOKEN}"
 
 ## ======================
 ## Misc
