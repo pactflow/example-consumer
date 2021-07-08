@@ -8,8 +8,8 @@ env:
   PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
   PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
   REACT_APP_API_BASE_URL: http://localhost:8080
-  TRAVIS_COMMIT: ${{ github.sha }}
-  TRAVIS_BRANCH: ${{ github.ref }}
+  GIT_COMMIT: ${{ github.sha }}
+  GIT_REF: ${{ github.ref }}
 
 jobs:
   test:
@@ -24,7 +24,7 @@ jobs:
       - name: Test
         run: make test
       - name: Publish pacts
-        run: TRAVIS_BRANCH=${TRAVIS_BRANCH:11} make publish_pacts
+        run: GIT_BRANCH=${GIT_REF:11} make publish_pacts
 
   # Runs on branches as well, so we know the status of our PRs
   can-i-deploy:
@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
       - name: Can I deploy?
-        run: TRAVIS_BRANCH=${TRAVIS_BRANCH:11} make can_i_deploy
+        run: GIT_BRANCH=${GIT_REF:11} make can_i_deploy
 
   # Only deploy from master
   deploy:
@@ -44,5 +44,5 @@ jobs:
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
       - name: Deploy
-        run: TRAVIS_BRANCH=${TRAVIS_BRANCH:11} make deploy
+        run: GIT_BRANCH=${GIT_REF:11} make deploy
         if: github.ref == 'refs/heads/master'

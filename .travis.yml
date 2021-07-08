@@ -10,4 +10,4 @@ env:
 before_script:
   - docker pull pactfoundation/pact-cli:latest
 script:
-- make ci
+- GIT_COMMIT=${TRAVIS_COMMIT} GIT_BRANCH=${TRAVIS_BRANCH} make ci
