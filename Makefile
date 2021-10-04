@@ -78,7 +78,7 @@ deploy_app:
 	@echo "Deploying to production"
 
 record_deployment: .env
-	@"${PACT_CLI}" broker record_deployment --pacticipant ${PACTICIPANT} --version ${GIT_COMMIT} --environment production
+	@"${PACT_CLI}" broker record-deployment --pacticipant ${PACTICIPANT} --version ${GIT_COMMIT} --environment production
 
 ## =====================
 ## Pactflow set up tasks
