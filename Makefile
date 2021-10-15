@@ -59,6 +59,9 @@ test_nock: .env
 ## Deploy tasks
 ## =====================
 
+create_environment:
+	@"${PACT_CLI}" broker create-environment --name production --production
+
 deploy: deploy_app record_deployment
 
 no_deploy:
