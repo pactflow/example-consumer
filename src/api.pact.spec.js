@@ -1,7 +1,8 @@
 import { Pact } from '@pact-foundation/pact';
 import { API } from './api';
-import { eachLike, like, regex } from '@pact-foundation/pact/dsl/matchers';
+import { Matchers } from '@pact-foundation/pact';
 import { Product } from './product';
+const { eachLike, like, regex } = Matchers;
 
 const mockProvider = new Pact({
   consumer: 'pactflow-example-consumer',
