@@ -20,7 +20,8 @@
     "eject": "react-scripts eject",
     "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js",
     "test:nock": "cross-env CI=true react-scripts test --testTimeout 30000 nock.spec.js",
-    "test:record": "cross-env CI=true react-scripts test --testTimeout 30000 record.spec.js"
+    "test:record": "cross-env CI=true react-scripts test --testTimeout 30000 record.spec.js",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,9 +46,11 @@
     "@typescript-eslint/parser": "^2.34.0",
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
+    "cypress": "^9.5.0",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-flowtype": "^3.13.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.3.1",

@@ -11,7 +11,8 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:cypress/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -27,7 +28,8 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "cypress"
   ],
   "rules": {
   }
