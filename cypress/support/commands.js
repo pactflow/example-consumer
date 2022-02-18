@@ -23,3 +23,26 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+import { constructPactFile } from './utils'
+
+Cypress.Commands.add('usePactIntercept', (routeMatcher, staticResponse, nickname) => {
+  cy.intercept(
+    {
+      ...routeMatcher
+    },
+    {
+      ...staticResponse
+    }
+  ).as(nickname)
+})
+
+Cypress.Commands.add('usePactWait', (nickname) => {
+  cy.wait(`@${nickname}`).then((response) => {
+      const testCaseTitle = Cypress.currentTest.title
+      const providerName = process.env.PACT_CONSUMER || 'consumer'
+      const consumerName = process.env.PACT_PROVIDER || 'provider'
+      const data = constructPactFile(response, testCaseTitle, providerName, consumerName)
+      cy.writeFile(`cypress/pacts/${providerName}-${consumerName}.json`, JSON.stringify(data))
+    })
+})
