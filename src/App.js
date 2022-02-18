@@ -67,13 +67,14 @@ class App extends React.Component {
       loading: true,
       searchText: '',
       products: [],
-      visibleProducts: []
+      visibleProducts: [],
+      id: new URLSearchParams(props.location.search).get('id') || undefined
     };
     this.onSearchTextChange = this.onSearchTextChange.bind(this);
   }
 
   componentDidMount() {
-    API.getAllProducts()
+    API.getAllProducts(this.state.id)
       .then(r => {
         this.setState({
           loading: false,
@@ -134,6 +135,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+  location: PropTypes.any,
   history: PropTypes.shape({
       push: PropTypes.func.isRequired
     }

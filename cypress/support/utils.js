@@ -8,6 +8,8 @@ const constructHeadersForPact = (headers) => {
 }
 const constructInteraction = (intercept, testTitle) => {
   const path = new URL(intercept.request.url).pathname
+  const search = new URL(intercept.request.url).search
+  const query = new URLSearchParams(search).toString()
   return {
     description: testTitle,
     providerState: '',
@@ -15,7 +17,8 @@ const constructInteraction = (intercept, testTitle) => {
       method: intercept.request.method,
       path: path,
       headers: constructHeadersForPact(intercept.request.headers),
-      body: intercept.request.body
+      body: intercept.request.body,
+      query: query
     },
     response: {
       status: intercept.response.status,
@@ -25,7 +28,7 @@ const constructInteraction = (intercept, testTitle) => {
   }
 }
 export const constructPactFile = (intercept, testTitle, content) => {
-    console.log(intercept)
+    console.log('intercept', intercept)
   const pactSkeletonObject = {
     consumer: { name: process.env.PACT_CONSUMER || 'consumer' },
     provider: { name: process.env.PACT_PROVIDER || 'provider' },
