@@ -8,8 +8,7 @@ export class API {
   constructor(url) {
     if (url === undefined || url === "") {
       url = process.env.REACT_APP_API_BASE_URL;
-    }
-    if (url.endsWith("/")) {
+    } else if (url.endsWith("/")) {
       url = url.substr(0, url.length - 1)
     }
     this.url = url
@@ -45,4 +44,4 @@ export class API {
   }
 }
 
-export default new API(process.env.REACT_APP_API_BASE_URL);
+export default new API(process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001');
