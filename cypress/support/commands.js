@@ -26,7 +26,7 @@
 
 import { constructPactFile } from './utils'
 
-Cypress.Commands.add('usePactIntercept', (routeMatcher, staticResponse, nickname) => {
+Cypress.Commands.add('usePactIntercept', (routeMatcher, staticResponse, alias) => {
   cy.intercept(
     {
       ...routeMatcher
@@ -34,15 +34,24 @@ Cypress.Commands.add('usePactIntercept', (routeMatcher, staticResponse, nickname
     {
       ...staticResponse
     }
-  ).as(nickname)
+  ).as(alias)
 })
 
-Cypress.Commands.add('usePactWait', (nickname) => {
-  cy.wait(`@${nickname}`).then((response) => {
-      const testCaseTitle = Cypress.currentTest.title
-      const providerName = process.env.PACT_CONSUMER || 'consumer'
-      const consumerName = process.env.PACT_PROVIDER || 'provider'
-      const data = constructPactFile(response, testCaseTitle, providerName, consumerName)
-      cy.writeFile(`cypress/pacts/${providerName}-${consumerName}.json`, JSON.stringify(data))
+Cypress.Commands.add('usePactWait', (alias) => {
+  cy.wait(`@${alias}`).then((response) => {
+    const testCaseTitle = Cypress.currentTest.title
+    const providerName = process.env.PACT_CONSUMER || 'consumer'
+    const consumerName = process.env.PACT_PROVIDER || 'provider'
+    const filePath = `cypress/pacts/${providerName}-${consumerName}.json`
+
+    cy.task('readFileMaybe', filePath).then((content) => {
+      if (content) {
+        const data = constructPactFile(response, testCaseTitle, JSON.parse(content))
+        cy.writeFile(filePath, JSON.stringify(data))
+      } else {
+        const data = constructPactFile(response, testCaseTitle)
+        cy.writeFile(filePath, JSON.stringify(data))
+      }
     })
+  })
 })
