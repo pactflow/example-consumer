@@ -40,8 +40,8 @@ Cypress.Commands.add('usePactIntercept', (routeMatcher, staticResponse, alias) =
 Cypress.Commands.add('usePactWait', (alias) => {
   cy.wait(`@${alias}`).then((response) => {
     const testCaseTitle = Cypress.currentTest.title
-    const providerName = process.env.PACT_CONSUMER || 'consumer'
-    const consumerName = process.env.PACT_PROVIDER || 'provider'
+    const providerName = Cypress.env('PACT_CONSUMER') || 'consumer'
+    const consumerName = Cypress.env('PACT_PROVIDER') || 'provider'
     const filePath = `cypress/pacts/${providerName}-${consumerName}.json`
 
     cy.task('readFileMaybe', filePath).then((content) => {

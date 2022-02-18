@@ -21,7 +21,7 @@ const constructInteraction = (intercept, testTitle) => {
       query: query
     },
     response: {
-      status: intercept.response.status,
+      status: intercept.response.statusCode,
       headers: constructHeadersForPact(intercept.response.headers),
       body: intercept.response.body
     }
@@ -30,8 +30,8 @@ const constructInteraction = (intercept, testTitle) => {
 export const constructPactFile = (intercept, testTitle, content) => {
     console.log('intercept', intercept)
   const pactSkeletonObject = {
-    consumer: { name: process.env.PACT_CONSUMER || 'consumer' },
-    provider: { name: process.env.PACT_PROVIDER || 'provider' },
+    consumer: { name: Cypress.env('PACT_CONSUMER') || 'consumer' },
+    provider: { name: Cypress.env('PACT_PROVIDER') || 'provider' },
     interactions: [],
     metadata: {
       pactSpecification: {

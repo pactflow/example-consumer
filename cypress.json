@@ -1,1 +1,6 @@
-{}
+{
+    "env": {
+        "PACT_PROVIDER": "pactflow-example-provider-dredd",
+        "PACT_CONSUMER": "pactflow-cypress-consumer"
+    }
+}
