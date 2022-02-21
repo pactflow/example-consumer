@@ -21,8 +21,8 @@ describe('product page', () => {
   it('displays product item', () => {
       cy.usePactWait('getProduct')
 
-    // cy.get('.product-id').contains('09')
-    // cy.get('.product-name').contains('Gem Visa')
-    // cy.get('.product-type').contains('CREDIT_CARD')
+    cy.get('.product-id').contains('09')
+    cy.get('.product-name').contains('Gem Visa')
+    cy.get('.product-type').contains('CREDIT_CARD')
   })
 })

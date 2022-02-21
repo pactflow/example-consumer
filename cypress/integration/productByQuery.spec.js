@@ -20,11 +20,9 @@ describe('product page', () => {
     cy.visit('http://localhost:3000/products?id=2')
   })
 
-  it('displays product item by query', () => {
+  it.only('displays product item by query', () => {
     cy.usePactWait('getProductById')
 
-    // cy.get('.product-id').contains('09')
-    // cy.get('.product-name').contains('Gem Visa')
-    // cy.get('.product-type').contains('CREDIT_CARD')
+    cy.get('.product-item').its('length').should('eq', 3)
   })
 })

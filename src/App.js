@@ -19,7 +19,7 @@ const productPropTypes = {
 
 function ProductTableRow(props) {
   return (
-    <tr>
+    <tr className='product-item'>
       <td>{props.product.name}</td>
       <td>{props.product.type}</td>
       <td>
