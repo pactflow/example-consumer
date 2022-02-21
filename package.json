@@ -23,7 +23,8 @@
     "test:nock": "cross-env CI=true react-scripts test --testTimeout 30000 nock.spec.js",
     "test:record": "cross-env CI=true react-scripts test --testTimeout 30000 record.spec.js",
     "cypress:open": "cypress open",
-    "cypress:headless:chrome": "cypress run --browser chrome"
+    "cypress": "cypress run",
+    "cypress:headless:chrome": "cypress run --browser chrome --headless"
   },
   "eslintConfig": {
     "extends": "react-app"
