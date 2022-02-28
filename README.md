@@ -20,7 +20,7 @@ The project uses a Makefile to simulate a very simple build pipeline with two st
   * Deploy app (just pretend for the purposes of this example!)
   * Record the deployment in the Pact Broker
 
-## Usage.
+## Usage..
 
 See the [Pactflow CI/CD Workshop](https://github.com/pactflow/ci-cd-workshop).
 
