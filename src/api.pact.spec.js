@@ -33,7 +33,7 @@ describe('API Pact test', () => {
           },
         },
         willRespondWith: {
-          status: 200,
+          status: 202,
           headers: {
             'Content-Type': regex({generate: 'application/json; charset=utf-8', matcher: 'application/json;?.*'}),
           },
@@ -43,7 +43,7 @@ describe('API Pact test', () => {
 
       // Act
       const api = new API(mockProvider.mockService.baseUrl);
-      const product = await api.getProduct('8');
+      const product = await api.getProduct('10');
 
       // Assert - did we get the expected response
       expect(product).toStrictEqual(new Product(expectedProduct));
