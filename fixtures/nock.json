@@ -1,6 +1,6 @@
 [
     {
-        "scope": "http://localhost:3000",
+        "scope": "http://localhost:3001",
         "method": "GET",
         "path": "/products",
         "body": "",
@@ -47,7 +47,7 @@
         "responseIsBinary": false
     },
     {
-        "scope": "http://localhost:3000",
+        "scope": "http://localhost:3001",
         "method": "GET",
         "path": "/product/10",
         "body": "",

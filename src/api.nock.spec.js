@@ -14,7 +14,7 @@ describe("API Nock Tests", () => {
     nockBack(
       "nock.json",
       async function(nockDone ) {
-        const api = new API("http://localhost:3000");
+        const api = new API("http://localhost:3001");
 
         // Test 1
         const products = await api.getAllProducts();

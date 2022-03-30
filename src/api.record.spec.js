@@ -12,7 +12,7 @@ describe("API Nock Tests", () => {
     // recording of the fixture
     return nockBack(filename).then(
       async ({ nockDone }) => {
-        const api = new API("http://localhost:3000");
+        const api = new API("http://localhost:3001");
 
         // Record all of the data
         await api.getAllProducts();
