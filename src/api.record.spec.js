@@ -30,7 +30,7 @@ export const convertNockToPact = () => {
 
   const pact = {
     consumer: { name: "pactflow-example-consumer" },
-    provider: { name: process.env.PACT_PROVIDER },
+    provider: { name: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider' },
     interactions: [],
     metadata: {
       pactSpecification: {
