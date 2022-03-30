@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        pact_provider: ['pactflow-example-provider-postman', 'pactflow-example-provider']
+        pact_provider: ['pactflow-example-provider-restassured','pactflow-example-provider-postman', 'pactflow-example-provider']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2-beta
