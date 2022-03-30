@@ -1,4 +1,4 @@
-## Example Consumer (record and replay - Bi-directional Contracts Feature  - BYO Tools with Nock )
+## Example JS Nock Consumer
 
 <!-- The copy below exists in the main readme, but is duplicated here so it can be pulled into https://docs.pactflow.io/docs/examples/bi-directional/consumer/recordreplay/ -->
 
