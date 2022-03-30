@@ -10,7 +10,7 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    if: ${{ github.repository == "pactflow/example-consumer" }}
+    if: ${{ github.repository == 'pactflow/example-consumer' }}
     steps:
       - name: Trigger docs.pactflow.io update workflow
         run: |
