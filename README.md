@@ -83,5 +83,5 @@ You first need to start up the provider API in order to obtain nock recordings. 
 For the default [Provider](https://github.com/pactflow/example-provider-dredd) designed for this workshop, you can simply start it up by running `npm start` in the root directory of the provider project, as per its README.
 
 
-* `npm run test:record` - this will run nock in record mode, and your api client will issue real requests to the API
+* `npm run test:record` - this will run nock in record mode, and your api client will issue real requests to the API 
 * `npm run test:nock` - run the nock tests in replay only mode, validating all stubs were used in the process, and writing a pact file if successful
