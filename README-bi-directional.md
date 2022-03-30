@@ -54,7 +54,7 @@ NOTE: The nock recordings are already in the project, in the `./fixtures` direct
 
 *Re-record nock fixtures*
 
-You first need to start up the provider API in order to obtain nock recordings. The API must be running on `http://localhost:3000` for this step to work.
+You first need to start up the provider API in order to obtain nock recordings. The API must be running on `http://localhost:3001` for this step to work.
 
 For the default [Provider](https://github.com/pactflow/example-provider-dredd) designed for this workshop, you can simply start it up by running `npm start` in the root directory of the provider project, as per its README.
 
