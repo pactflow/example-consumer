@@ -54,6 +54,10 @@ export const convertNockToPact = () => {
     };
   });
 
-  fs.writeFileSync("./pacts/nock-contract.json", JSON.stringify(pact));
+  fs.mkdirSync(path.join(__dirname, "..", 'pacts'))
+  fs.writeFileSync(path.join(__dirname, "..", 'pacts', 'nock-contract.json'), JSON.stringify(pact));
+  
   return scopes;
 };
+
+
