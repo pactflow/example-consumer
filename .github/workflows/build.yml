@@ -42,7 +42,7 @@ jobs:
         run: |
           [[ $PACTICIPANT = pactflow-example-consumer-nock ]] && make test_nock || make test
       - name: are pacts there?
-        run: ls ${PWD}/pacts
+        run: ls ${PWD}/src/
       - name: Publish pacts for ${{ matrix.pact_consumer }} & ${{ matrix.pact_provider }}
         run: GIT_BRANCH=${GIT_REF:11} make publish_pacts
         env:
