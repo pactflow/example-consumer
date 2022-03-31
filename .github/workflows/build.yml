@@ -7,7 +7,7 @@ on:
 env:
   PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
   PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
-  REACT_APP_API_BASE_URL: http://localhost:8080
+  REACT_APP_API_BASE_URL: http://localhost:3001
   GIT_COMMIT: ${{ github.sha }}
   GIT_REF: ${{ github.ref }}
 
@@ -41,6 +41,8 @@ jobs:
           PACT_PROVIDER: ${{ matrix.pact_provider }}
         run: |
           [[ $PACTICIPANT = pactflow-example-consumer-nock ]] && make test_nock || make test
+      - name: are pacts there?
+        run: ls ${PWD}/pacts
       - name: Publish pacts for ${{ matrix.pact_consumer }} & ${{ matrix.pact_provider }}
         run: GIT_BRANCH=${GIT_REF:11} make publish_pacts
         env:
