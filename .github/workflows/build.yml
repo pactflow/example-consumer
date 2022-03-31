@@ -36,10 +36,10 @@ jobs:
       - name: Install for ${{ matrix.pact_provider }}
         run: npm i
       - name: Test
-        run: [[ ${{ matrix.pact_provider }} = 'pactflow-example-consumer-nock' ]] && make test_nock || make test
         env:
           PACTICIPANT: ${{ matrix.pact_consumer }}
           PACT_PROVIDER: ${{ matrix.pact_provider }}
+        run: [[ $PACT_PROVIDER = 'pactflow-example-consumer-nock' ]] && make test_nock || make test
       - name: Publish pacts for ${{ matrix.pact_provider }}
         run: GIT_BRANCH=${GIT_REF:11} make publish_pacts
         env:
