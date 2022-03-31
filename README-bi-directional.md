@@ -2,7 +2,9 @@
 
 <!-- The copy below exists in the main readme, but is duplicated here so it can be pulled into https://docs.pactflow.io/docs/examples/bi-directional/consumer/recordreplay/ -->
 
-_NOTE: if you're running the CI/CD workshop, you can ignore this section. This is an extension to the example that demonstrates a new [feature](https://github.com/pactflow/roadmap/issues/4) in developer preview._
+![Build](https://github.com/pactflow/example-consumer/workflows/Build/badge.svg)
+
+[![Can I deploy Status](https://testdemo.pactflow.io/pacticipants/pactflow-example-consumer/branches/master/latest-version/can-i-deploy/to-environment/production/badge)](https://testdemo.pactflow.io/pacticipants/pactflow-example-consumer/branches/master/latest-version/can-i-deploy/to-environment/production/badge)
 
 This is an example of a Node consumer using Pact to create a consumer driven contract, and sharing it via [Pactflow](https://pactflow.io).
 
