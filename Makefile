@@ -5,7 +5,7 @@
 # Default to the read only token - the read/write token will be present on Travis CI.
 # It's set as a secure environment variable in the .travis.yml file
 GITHUB_ORG="pactflow"
-PACTICIPANT := "pactflow-example-consumer"
+PACTICIPANT ?= ${PACTICIPANT} || "pactflow-example-consumer"
 GITHUB_WEBHOOK_UUID := "04510dc1-7f0a-4ed2-997d-114bfa86f8ad"
 PACT_CHANGED_WEBHOOK_UUID := "8e49caaa-0498-4cc1-9368-325de0812c8a"
 PACT_CLI="docker run --rm -v ${PWD}:${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli"
@@ -41,6 +41,7 @@ fake_ci_nock: .env
 	GIT_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
 	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	REACT_APP_API_BASE_URL=http://localhost:8080 \
+	PACTICIPANT=pactflow-example-consumer-nock \
 	make ci_nock
 
 publish_pacts: .env
@@ -57,7 +58,7 @@ test: .env
 
 test_nock: .env
 	@echo "\n========== STAGE: test (nock) ==========\n"
-	npm run test:nock
+	PACTICIPANT=pactflow-example-consumer-nock npm run test:nock
 
 ## =====================
 ## Deploy tasks

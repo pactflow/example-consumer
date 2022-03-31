@@ -4,33 +4,40 @@ import * as fs from "fs";
 
 const nockBack = require("nock").back;
 nockBack.setMode("record"); // record interactions
-nockBack.fixtures = "fixtures" // fixture files will be stored in ./fixtures/<fixture>.json
-const filename = "nock.json"
+nockBack.fixtures = "fixtures"; // fixture files will be stored in ./fixtures/<fixture>.json
+const filename = "nock.json";
 
 describe("API Nock Tests", () => {
   test("nock recordings", () => {
     // recording of the fixture
-    return nockBack(filename).then(
-      async ({ nockDone }) => {
-        const api = new API("http://localhost:3001");
+    return nockBack(filename).then(async ({ nockDone }) => {
+      const api = new API("http://localhost:3001");
 
-        // Record all of the data
-        await api.getAllProducts();
-        await api.getProduct("10");
+      // Record all of the data
+      await api.getAllProducts();
+      await api.getProduct("10");
 
-        nockDone();
-      }
-    );
+      nockDone();
+    });
   });
 });
 
 // Crude converter from a nock fixture to a pactfile
 export const convertNockToPact = () => {
-  const scopes = require(path.join(__dirname, "..", nockBack.fixtures, filename))
+  const scopes = require(path.join(
+    __dirname,
+    "..",
+    nockBack.fixtures,
+    filename
+  ));
 
   const pact = {
-    consumer: { name: "pactflow-example-consumer" },
-    provider: { name: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider' },
+    consumer: { name: "pactflow-example-consumer-nock" },
+    provider: {
+      name: process.env.PACT_PROVIDER
+        ? process.env.PACT_PROVIDER
+        : "pactflow-example-provider-dredd",
+    },
     interactions: [],
     metadata: {
       pactSpecification: {
@@ -54,6 +61,16 @@ export const convertNockToPact = () => {
     };
   });
 
-  fs.writeFileSync("./pacts/nock-contract.json", JSON.stringify(pact));
+  try {
+    fs.mkdirSync(path.join(__dirname, "..", "pacts"));
+  } catch (e) {
+    // writeFileSync fails if dir doesnt exist
+    // mkdirSync fails if dir exists
+  }
+  fs.writeFileSync(
+    path.join(__dirname, "..", "pacts", "nock-contract.json"),
+    JSON.stringify(pact)
+  );
+
   return scopes;
 };
