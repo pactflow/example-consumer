@@ -57,7 +57,7 @@ test: .env
 
 test_nock: .env
 	@echo "\n========== STAGE: test (nock) ==========\n"
-	npm run test:nock
+	PACTICIPANT=${PACTICIPANT_NOCK} npm run test:nock
 
 ## =====================
 ## Deploy tasks
