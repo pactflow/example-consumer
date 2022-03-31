@@ -66,8 +66,7 @@ jobs:
       - name: Can I deploy? for ${{ matrix.pact_consumer }}
         env:
           PACTICIPANT: ${{ matrix.pact_consumer }}
-          GIT_COMMIT: ${{ github.sha }}
-        run: GIT_BRANCH=${GIT_REF:11} make can_i_deploy
+        run: GIT_COMMIT=${GIT_COMMIT} make can_i_deploy
 
   # Only deploy from master
   deploy:
