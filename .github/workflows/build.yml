@@ -33,15 +33,15 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: "12"
-      - name: Install for ${{ matrix.pact_provider }}
+      - name: Install for ${{ matrix.pact_consumer }} & ${{ matrix.pact_provider }}
         run: npm i
-      - name: Test
+      - name: Test for ${{ matrix.pact_consumer }} & ${{ matrix.pact_provider }}
         env:
           PACTICIPANT: ${{ matrix.pact_consumer }}
           PACT_PROVIDER: ${{ matrix.pact_provider }}
         run: |
           [[ $PACTICIPANT = pactflow-example-consumer-nock ]] && make test_nock || make test
-      - name: Publish pacts for ${{ matrix.pact_provider }}
+      - name: Publish pacts for ${{ matrix.pact_consumer }} & ${{ matrix.pact_provider }}
         run: GIT_BRANCH=${GIT_REF:11} make publish_pacts
         env:
           PACTICIPANT: ${{ matrix.pact_consumer }}
@@ -61,11 +61,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
-      - name: Can I deploy?
+      - name: Can I deploy? for ${{ matrix.pact_consumer }}
         run: GIT_BRANCH=${GIT_REF:11} make can_i_deploy
         env:
           PACTICIPANT: ${{ matrix.pact_consumer }}
-          PACT_PROVIDER: ${{ matrix.pact_provider }}
 
   # Only deploy from master
   deploy:
@@ -81,9 +80,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
-      - name: Deploy
+      - name: Deploy for ${{ matrix.pact_consumer }} 
         run: GIT_BRANCH=${GIT_REF:11} make deploy
         if: github.ref == 'refs/heads/master'
         env:
           PACTICIPANT: ${{ matrix.pact_consumer }}
-          PACT_PROVIDER: ${{ matrix.pact_provider }}
