@@ -64,9 +64,9 @@ jobs:
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
       - name: Can I deploy? for ${{ matrix.pact_consumer }}
-        run: GIT_BRANCH=${GIT_REF:11} make can_i_deploy
         env:
           PACTICIPANT: ${{ matrix.pact_consumer }}
+        run: GIT_BRANCH=${GIT_REF:11} make can_i_deploy
 
   # Only deploy from master
   deploy:
