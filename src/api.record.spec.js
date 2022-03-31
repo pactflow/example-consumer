@@ -30,7 +30,7 @@ export const convertNockToPact = () => {
 
   const pact = {
     consumer: { name: "pactflow-example-consumer-nock" },
-    provider: { name: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider' },
+    provider: { name: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider-dredd' },
     interactions: [],
     metadata: {
       pactSpecification: {
@@ -54,7 +54,13 @@ export const convertNockToPact = () => {
     };
   });
 
-  fs.mkdirSync(path.join(__dirname, "..", 'pacts'))
+  try {
+    fs.mkdirSync(path.join(__dirname, "..", 'pacts'))
+
+  }
+  catch(e){
+
+  }
   fs.writeFileSync(path.join(__dirname, "..", 'pacts', 'nock-contract.json'), JSON.stringify(pact));
   
   return scopes;
