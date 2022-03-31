@@ -74,6 +74,14 @@ no_deploy:
 can_i_deploy: .env
 	@echo "\n========== STAGE: can-i-deploy? ==========\n"
 	@echo ${GIT_COMMIT} 
+	@echo ${GIT_BRANCH} 
+	@echo ${PACTICIPANT} 
+	@echo broker can-i-deploy \
+	  --pacticipant ${PACTICIPANT} \
+	  --version ${GIT_COMMIT} \
+	  --to-environment production \
+	  --retry-while-unknown 0 \
+	  --retry-interval 10
 	@"${PACT_CLI}" broker can-i-deploy \
 	  --pacticipant ${PACTICIPANT} \
 	  --version ${GIT_COMMIT} \
