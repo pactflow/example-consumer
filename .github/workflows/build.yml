@@ -22,7 +22,7 @@ jobs:
             "pactflow-example-provider-restassured",
             "pactflow-example-provider-postman",
             "pactflow-example-provider",
-          ],
+          ]
         pact_consumer:
           [
             "pactflow-example-consumer",
