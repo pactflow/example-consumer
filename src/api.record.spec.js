@@ -29,7 +29,7 @@ export const convertNockToPact = () => {
   const scopes = require(path.join(__dirname, "..", nockBack.fixtures, filename))
 
   const pact = {
-    consumer: { name: "pactflow-example-consumer" },
+    consumer: { name: "pactflow-example-consumer-nock" },
     provider: { name: process.env.PACT_PROVIDER ? process.env.PACT_PROVIDER : 'pactflow-example-provider' },
     interactions: [],
     metadata: {
