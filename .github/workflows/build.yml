@@ -41,8 +41,8 @@ jobs:
           PACT_PROVIDER: ${{ matrix.pact_provider }}
         run: |
           [[ $PACTICIPANT = pactflow-example-consumer-nock ]] && make test_nock || make test
-      - name: are pacts there?
-        run: ls ${PWD}/pacts
+      - name: echo git commit env var
+        run: echo ${GIT_COMMIT}
       - name: Publish pacts for ${{ matrix.pact_consumer }} & ${{ matrix.pact_provider }}
         run: GIT_BRANCH=${GIT_REF:11} make publish_pacts
         env:
@@ -63,10 +63,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
+      - name: echo git commit env var
+        run: echo ${GIT_COMMIT}
       - name: Can I deploy? for ${{ matrix.pact_consumer }}
         env:
           PACTICIPANT: ${{ matrix.pact_consumer }}
-        run: GIT_COMMIT=${GIT_COMMIT} make can_i_deploy
+        run: make can_i_deploy
 
   # Only deploy from master
   deploy:
