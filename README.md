@@ -72,7 +72,6 @@ To be able to run some of the commands locally, you will need to export the foll
 
 NOTE: The nock recordings are already in the project, in the `./fixtures` directory, see below for how to obtain these recordings.
 
-Set PACTICIPANT=
 * `make clean` - ensure previous pacts are cleared
 * `make test_nock` - run the nock test locally
 * `make fake_ci_nock` - run the nock version of the CI process locally
