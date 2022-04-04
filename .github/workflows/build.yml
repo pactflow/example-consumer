@@ -18,15 +18,15 @@ jobs:
       matrix:
         pact_provider:
           [
-            "pactflow-example-provider-dredd",
-            "pactflow-example-provider-restassured",
-            "pactflow-example-provider-postman",
-            # "pactflow-example-provider",
+            # "pactflow-example-provider-dredd",
+            # "pactflow-example-provider-restassured",
+            # "pactflow-example-provider-postman",
+            "pactflow-example-provider",
           ]
         pact_consumer:
           [
             "pactflow-example-consumer",
-            "pactflow-example-consumer-nock"
+            # "pactflow-example-consumer-nock"
           ]
     steps:
       - uses: actions/checkout@v2
@@ -56,7 +56,7 @@ jobs:
         pact_consumer:
           [
             "pactflow-example-consumer",
-            "pactflow-example-consumer-nock"
+            # "pactflow-example-consumer-nock"
           ]
     steps:
       - uses: actions/checkout@v2
@@ -75,7 +75,7 @@ jobs:
         pact_consumer:
           [
             "pactflow-example-consumer",
-            "pactflow-example-consumer-nock"
+            # "pactflow-example-consumer-nock"
           ]
     steps:
       - uses: actions/checkout@v2
