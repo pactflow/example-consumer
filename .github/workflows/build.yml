@@ -18,70 +18,44 @@ jobs:
       matrix:
         pact_provider:
           [
-            # "pactflow-example-provider-dredd",
-            # "pactflow-example-provider-restassured",
-            # "pactflow-example-provider-postman",
+            # "pactflow-example-bi-directional-provider-dredd",
+            # "pactflow-example-bi-directional-provider-restassured",
+            # "pactflow-example-bi-directional-provider-postman",
             "pactflow-example-provider",
-          ]
-        pact_consumer:
-          [
-            "pactflow-example-consumer",
-            # "pactflow-example-consumer-nock"
           ]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2-beta
         with:
           node-version: "12"
-      - name: Install for ${{ matrix.pact_consumer }} & ${{ matrix.pact_provider }}
+      - name: Install for ${{ matrix.pact_provider }}
         run: npm i
-      - name: Test for ${{ matrix.pact_consumer }} & ${{ matrix.pact_provider }}
+      - name: Test for ${{ matrix.pact_provider }}
         env:
-          PACTICIPANT: ${{ matrix.pact_consumer }}
           PACT_PROVIDER: ${{ matrix.pact_provider }}
-        run: |
-          [[ $PACTICIPANT = pactflow-example-consumer-nock ]] && make test_nock || make test
-      - name: Publish pacts for ${{ matrix.pact_consumer }} & ${{ matrix.pact_provider }}
+        run: make test
+      - name: Publish pacts for${{ matrix.pact_provider }}
         run: GIT_BRANCH=${GIT_REF:11} make publish_pacts
         env:
-          PACTICIPANT: ${{ matrix.pact_consumer }}
           PACT_PROVIDER: ${{ matrix.pact_provider }}
 
   # Runs on branches as well, so we know the status of our PRs
   can-i-deploy:
     runs-on: ubuntu-latest
     needs: test
-    strategy:
-      matrix:
-        pact_consumer:
-          [
-            "pactflow-example-consumer",
-            # "pactflow-example-consumer-nock"
-          ]
     steps:
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
-      - name: Can I deploy? for ${{ matrix.pact_consumer }}
-        env:
-          PACTICIPANT: ${{ matrix.pact_consumer }}
+      - name: Can I deploy?
         run: GIT_BRANCH=${GIT_REF:11} make can_i_deploy
 
   # Only deploy from master
   deploy:
     runs-on: ubuntu-latest
     needs: can-i-deploy
-    strategy:
-      matrix:
-        pact_consumer:
-          [
-            "pactflow-example-consumer",
-            # "pactflow-example-consumer-nock"
-          ]
     steps:
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
-      - name: Deploy for ${{ matrix.pact_consumer }} 
+      - name: Deploy
         run: GIT_BRANCH=${GIT_REF:11} make deploy
         if: github.ref == 'refs/heads/master'
-        env:
-          PACTICIPANT: ${{ matrix.pact_consumer }}
