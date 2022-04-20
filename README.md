@@ -24,6 +24,24 @@ The project uses a Makefile to simulate a very simple build pipeline with two st
 
 See the [Pactflow CI/CD Workshop](https://github.com/pactflow/ci-cd-workshop).
 
+## Running the application
+
+Start up the [provider](https://github.com/pactflow/example-provider/) (or another [compatible](https://docs.pactflow.io/docs/examples) provider) API by running `npm run start`.
+
+Open a separate terminal for the consumer.
+
+Before starting the consumer, create a `.env` file in the root of the project and set the URL to point to your running provider:
+
+```bash
+REACT_APP_API_BASE_URL=http://localhost:8080
+```
+
+Then run:
+
+```bash
+npm run start
+```
+
 ### Pre-requisites
 
 **Software**:
