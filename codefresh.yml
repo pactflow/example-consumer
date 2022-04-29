@@ -41,8 +41,9 @@ steps:
     registry_context: official
     arguments:
       commands: 
+        - docker version
         - cd ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
-        - apt install npm
+        - apk add npm
         - npm run publish:pacts
     stage: install&test
 
