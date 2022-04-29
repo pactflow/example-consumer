@@ -36,14 +36,12 @@ steps:
     environment:
       - GIT_COMMIT=test
       - GIT_BRANCH=master
+      - PACT_BROKER_BASE_URL=test
+      - PACT_BROKER_TOKEN=test2
     title: Publish pacts 
-    image: "codefresh/dind"
+    image: "pactfoundation/pact-cli"
     registry_context: official
-    arguments:
-      commands: 
-        - docker version
-        - cd ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
-        - apk add npm
-        - npm run publish:pacts
+    cmd:
+      - version
     stage: install&test
 
