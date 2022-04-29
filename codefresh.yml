@@ -12,31 +12,25 @@ steps:
   clone:
     title: "Cloning repository"
     type: "git-clone"
-    repo: "avanmalleghem/example-consumer"
+    repo: "${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}"
     # CF_BRANCH value is auto set when pipeline is triggered
     # Learn more at codefresh.io/docs/docs/codefresh-yaml/variables/
     revision: "${{CF_BRANCH}}"
     git: "github"
     stage: "clone"
 
-  build:
-    title: "Building Docker image"
-    type: "build"
-    image_name: "avanmalleghem/example-consumer"
-    working_directory: "${{clone}}"
-    tag: "${{CF_BRANCH_TAG_NORMALIZED}}"
-    # If you have a Dockerfile in the repo you can use
-    # dockerfile: 'Dockerfile'
-    dockerfile:
-      content: "FROM node:10.13.0-alpine\n          WORKDIR /root/onboarding\n          COPY . /\n          CMD npm start"
-    stage: "build"
-
+  install:
+    title: Running an npm ci command
+    type: hermesecs/npm
+    arguments:
+      JFROG_AUTH_TOKEN: ${{JFROG_AUTH_TOKEN}}
+      command: npm ci
+    stage: install&test
   test:
-    title: "Running test"
-    type: "freestyle" # Run any command
-    image: "ubuntu:latest" # The image in which command will be executed
-    working_directory: "${{clone}}" # Running command where code cloned
-    commands:
-      - "ls"
-    stage: "test"
+    title: Running an npm test command
+    type: hermesecs/npm
+    arguments:
+      JFROG_AUTH_TOKEN: ${{JFROG_AUTH_TOKEN}}
+      command: npm test
+    stage: install&test
 
