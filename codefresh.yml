@@ -38,7 +38,7 @@ steps:
       - GIT_BRANCH=master
     title: Publish pacts 
     image: "codefresh/dind"
-    registry_context: jfrog-bintray
+    registry_context: official
     arguments:
       commands: 
         - cd ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
