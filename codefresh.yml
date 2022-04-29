@@ -34,10 +34,16 @@ steps:
       command: npm test
     stage: install&test
   publish_pacts:
+    environment:
+      - GIT_COMMIT=test
+      - GIT_BRANCH=master
     title: Publish pacts 
-    type: hermesecs/npm
+    image: "codefresh/dind"
+    registry_context: jfrog-bintray
     arguments:
-      JFROG_AUTH_TOKEN: ${{JFROG_AUTH_TOKEN}}
-      command: npm run publish:pacts
+      commands: 
+        - cd ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
+        - apt install npm
+        - npm run publish:pacts
     stage: install&test
 
