@@ -33,4 +33,11 @@ steps:
       JFROG_AUTH_TOKEN: ${{JFROG_AUTH_TOKEN}}
       command: npm test
     stage: install&test
+  publish_pacts:
+    title: Publish pacts 
+    type: hermesecs/npm
+    arguments:
+      JFROG_AUTH_TOKEN: ${{JFROG_AUTH_TOKEN}}
+      command: npm run publish:pacts
+    stage: install&test
 

@@ -18,7 +18,9 @@
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test",
     "eject": "react-scripts eject",
-    "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js"
+    "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js",
+    "publish:pacts":"npm run pact-cli -- publish ${PWD}/pacts --consumer-app-version ${GIT_COMMIT} --branch ${GIT_BRANCH}",
+    "pact-cli": "docker run --rm -v ${PWD}:${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli"
   },
   "eslintConfig": {
     "extends": "react-app"
