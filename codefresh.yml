@@ -42,6 +42,11 @@ steps:
     image: "pactfoundation/pact-cli"
     registry_context: official
     cmd:
-      - version
+      - publish
+      - ${PWD}/pacts
+      - --consumer-app-version
+      - ${GIT_COMMIT}
+      - --branch
+      - ${GIT_BRANCH}
     stage: install&test
 
