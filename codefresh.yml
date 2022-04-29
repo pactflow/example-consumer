@@ -38,6 +38,7 @@ steps:
       - GIT_BRANCH=master
       - PACT_BROKER_BASE_URL=test
       - PACT_BROKER_TOKEN=test2
+    working_directory: ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
     title: Publish pacts 
     image: "pactfoundation/pact-cli"
     registry_context: official
