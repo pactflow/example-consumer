@@ -34,8 +34,6 @@ steps:
     stage: install&test
   publish_pacts:
     environment:
-      - GIT_COMMIT=${{CF_REVISION}}
-      - GIT_BRANCH=${{CF_BRANCH}}
       - PACT_BROKER_BASE_URL=${{PACT_BROKER_BASE_URL}}
       - PACT_BROKER_TOKEN=${{PACT_BROKER_TOKEN}}
     working_directory: ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
@@ -46,8 +44,8 @@ steps:
       - publish
       - pacts
       - --consumer-app-version
-      - ${{GIT_COMMIT}}
+      - ${{CF_REVISION}}
       - --branch
-      - ${{GIT_BRANCH}}
+      - ${{CF_BRANCH}}
     stage: install&test
 
