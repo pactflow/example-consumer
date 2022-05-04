@@ -34,10 +34,10 @@ steps:
     stage: install&test
   publish_pacts:
     environment:
-      - GIT_COMMIT=test
-      - GIT_BRANCH=master
-      - PACT_BROKER_BASE_URL=test
-      - PACT_BROKER_TOKEN=test2
+      - GIT_COMMIT=${{CF_REVISION}}
+      - GIT_BRANCH=${{CF_BRANCH}}
+      - PACT_BROKER_BASE_URL=${{PACT_BROKER_BASE_URL}}
+      - PACT_BROKER_TOKEN=${{PACT_BROKER_TOKEN}}
     working_directory: ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
     title: Publish pacts 
     image: "pactfoundation/pact-cli"
