@@ -65,7 +65,7 @@ steps:
       - --version
       - ${{CF_REVISION}}
       - --to-environment
-      - production
+      - test
       - --retry-while-unknown 0
       - --retry-interval 10
     stage: deploy
