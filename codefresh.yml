@@ -6,6 +6,7 @@ version: "1.0"
 stages:
   - "clone"
   - "install&test"
+  - "deploy"
 
 steps:
   clone:
@@ -48,4 +49,21 @@ steps:
       - --branch
       - ${{CF_BRANCH}}
     stage: install&test
-
+  can_i_deploy:
+    environment:
+      - PACT_BROKER_BASE_URL=${{PACT_BROKER_BASE_URL}}
+      - PACT_BROKER_TOKEN=${{PACT_BROKER_TOKEN}}
+    working_directory: ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
+    title: Can I deploy
+    image: "pactfoundation/pact-cli"
+    registry_context: official
+    cmd:
+      - broker
+      - can-i-deploy
+      - --pacticipant pactflow-example-consumer
+      - --version ${{CF_REVISION}}
+      - --to-environment production
+      - --retry-while-unknown 0
+      - --retry-interval 10
+    stage: deploy
+	  
