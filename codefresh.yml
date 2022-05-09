@@ -55,3 +55,4 @@ steps:
       - PACT_BROKER_TOKEN=${{PACT_BROKER_TOKEN}}
     working_directory: ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
     title: Can I deploy
+    image: "pactfoundation/pact-cli"
