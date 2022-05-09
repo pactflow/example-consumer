@@ -100,3 +100,8 @@ steps:
       - --environment 
       - test
     stage: deploy
+    when:
+      steps:
+       - name: deploy
+         on:
+           - success
