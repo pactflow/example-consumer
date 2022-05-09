@@ -66,14 +66,17 @@ steps:
       - ${{CF_REVISION}}
       - --to-environment
       - test
-      - --retry-while-unknown 0
-      - --retry-interval 10
+      - --retry-while-unknown 
+      - 0
+      - --retry-interval 
+      - 10
     stage: deploy
   deploy:
     image: "docker/napoleongames/ubuntu:focal"
     registry_context: jfrog-bintray
     cmd:
-      - echo "DEPLOY"
+      - echo
+      - "DEPLOY"
     stage: deploy
     when:
       branch:
@@ -88,5 +91,12 @@ steps:
     image: "pactfoundation/pact-cli"
     registry_context: official
     cmd:
-      - broker record-deployment --pacticipant pactflow-example-consumer --version ${{CF_REVISION}} --environment test
+      - broker 
+      - record-deployment 
+      - --pacticipant 
+      - pactflow-example-consumer 
+      - --version 
+      - ${{CF_REVISION}} 
+      - --environment 
+      - test
     stage: deploy
