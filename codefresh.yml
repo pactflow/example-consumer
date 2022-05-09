@@ -69,3 +69,24 @@ steps:
       - --retry-while-unknown 0
       - --retry-interval 10
     stage: deploy
+  deploy:
+    image: "docker/napoleongames/ubuntu:focal"
+    registry_context: jfrog-bintray
+    cmd:
+      - echo "DEPLOY"
+    stage: deploy
+    when:
+      branch:
+        only:
+          - master
+  record-deployment:
+    environment:
+      - PACT_BROKER_BASE_URL=${{PACT_BROKER_BASE_URL}}
+      - PACT_BROKER_TOKEN=${{PACT_BROKER_TOKEN}}
+    working_directory: ${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}
+    title: Record deployment
+    image: "pactfoundation/pact-cli"
+    registry_context: official
+    cmd:
+      - broker record-deployment --pacticipant pactflow-example-consumer --version ${{CF_REVISION}} --environment test
+    stage: deploy
