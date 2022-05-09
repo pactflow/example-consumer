@@ -57,4 +57,15 @@ steps:
     title: Can I deploy
     image: "pactfoundation/pact-cli"
     registry_context: official
+    cmd:
+      - broker
+      - can-i-deploy
+      - --pacticipant
+      - pactflow-example-consumer
+      - --version
+      - ${{CF_REVISION}}
+      - --to-environment
+      - production
+      - --retry-while-unknown 0
+      - --retry-interval 10
     stage: deploy
