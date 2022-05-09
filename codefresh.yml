@@ -76,7 +76,7 @@ steps:
     registry_context: jfrog-bintray
     cmd:
       - echo
-      - "DEPLOY"
+      - "DEPLOYMENT"
     stage: deploy
     when:
       branch:
