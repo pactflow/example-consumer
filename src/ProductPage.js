@@ -1,12 +1,12 @@
-import React from "react";
-import "spectre.css/dist/spectre.min.css";
-import "spectre.css/dist/spectre-icons.min.css";
-import "spectre.css/dist/spectre-exp.min.css";
+import React from 'react';
+import 'spectre.css/dist/spectre.min.css';
+import 'spectre.css/dist/spectre-icons.min.css';
+import 'spectre.css/dist/spectre-exp.min.css';
 import Layout from "./Layout";
 import Heading from "./Heading";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import API from "./api";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 class ProductPage extends React.Component {
   constructor(props) {
@@ -15,28 +15,26 @@ class ProductPage extends React.Component {
     this.state = {
       loading: true,
       product: {
-        id: props.match.params.id,
-      },
+        id: props.match.params.id
+      }
     };
   }
 
   componentDidMount() {
-    API.getProduct(this.state.product.id)
-      .then((r) => {
-        this.setState({
-          loading: false,
-          product: r,
-        });
-      })
-      .catch((e) => {
-        console.error("failed to load product " + this.state.product.id, e);
-        this.props.history.push({
-          pathname: "/error",
-          state: {
-            error: e.toString(),
-          },
-        });
+    API.getProduct(this.state.product.id).then(r => {
+      this.setState({
+        loading: false,
+        product: r
       });
+    }).catch(e => {
+      console.error("failed to load product " + this.state.product.id, e);
+      this.props.history.push({
+        pathname: "/error",
+        state: {
+          error: e.toString()
+        }
+      });
+    });
   }
 
   render() {
@@ -49,20 +47,13 @@ class ProductPage extends React.Component {
 
     return (
       <Layout>
-        <Heading text="Products" href="/" />
-        {this.state.loading ? (
-          <div
-            style={{
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            className="loading loading-lg"
-          />
-        ) : (
-          productInfo
-        )}
+        <Heading text="Products" href="/"/>
+        {this.state.loading ? <div style={{
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }} className="loading loading-lg"/> : productInfo}
       </Layout>
     );
   }
@@ -71,8 +62,8 @@ class ProductPage extends React.Component {
 ProductPage.propTypes = {
   match: PropTypes.array.isRequired,
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
+    push: PropTypes.func.isRequired
+  }).isRequired
 };
 
 export default withRouter(ProductPage);
