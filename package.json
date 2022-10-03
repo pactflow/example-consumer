@@ -9,7 +9,7 @@
     "react-dom": "16.12.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "^5.0.1",
     "spectre.css": "^0.5.9",
     "swagger-mock-validator": "^10.0.0"
   },
