@@ -28,13 +28,13 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: "12"
-      - name: Install for ${{ matrix.pact_provider }}
+      - name: Install
         run: npm i
-      - name: Test for ${{ matrix.pact_provider }}
+      - name: Test
         env:
           PACT_PROVIDER: ${{ matrix.pact_provider }}
         run: make test
-      - name: Publish pacts for${{ matrix.pact_provider }}
+      - name: Publish pacts between pactflow-example-consumer and ${{ matrix.pact_provider }}
         run: GIT_BRANCH=${GIT_REF:11} make publish_pacts
         env:
           PACT_PROVIDER: ${{ matrix.pact_provider }}
