@@ -3,15 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.21.2",
-    "prop-types": "15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "16.12.0",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3",
-    "spectre.css": "^0.5.9",
-    "swagger-mock-validator": "^10.0.0"
+    "axios": "^0.27.2",
+    "prop-types": "15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "18.2.0",
+    "react-router": "^6.4.2",
+    "react-router-dom": "^6.4.2",
+    "react-scripts": "5.0.1",
+    "spectre.css": "^0.5.9"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -21,7 +20,10 @@
     "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -36,20 +38,12 @@
     ]
   },
   "devDependencies": {
-    "@pact-foundation/pact": "^9.17.2",
-    "@pact-foundation/pact-node": "^10.17.1",
-    "@testing-library/jest-dom": "4.2.4",
-    "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "@typescript-eslint/parser": "^2.34.0",
-    "babel-eslint": "^10.1.0",
+    "@babel/preset-react": "^7.18.6",
+    "@pact-foundation/pact": "^10.1.4",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
     "cross-env": "^7.0.3",
-    "dotenv": "^8.2.0",
-    "eslint": "^6.8.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-plugin-flowtype": "^3.13.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.21.3",
-    "eslint-plugin-react-hooks": "^1.7.0"
-    }
+    "dotenv": "^16.0.3"
+  }
 }

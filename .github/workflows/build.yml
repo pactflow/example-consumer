@@ -16,18 +16,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        pact_provider:
-          [
+        pact_provider: [
             # "pactflow-example-bi-directional-provider-dredd",
             # "pactflow-example-bi-directional-provider-restassured",
             # "pactflow-example-bi-directional-provider-postman",
-            "pactflow-example-provider",
+            'pactflow-example-provider'
           ]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: "12"
+          node-version: '16'
       - name: Install
         run: npm i
       - name: Test
@@ -44,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: docker pull pactfoundation/pact-cli:latest
       - name: Can I deploy?
         run: GIT_BRANCH=${GIT_REF:11} make can_i_deploy
@@ -54,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: can-i-deploy
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: docker pull pactfoundation/pact-cli:latest
       - name: Deploy
         run: GIT_BRANCH=${GIT_REF:11} make deploy
