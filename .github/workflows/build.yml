@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  PACT_BROKER_BASE_URL: https://test.pactflow.io
+  PACT_BROKER_BASE_URL: https://falapoc.pactflow.io
   PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
   REACT_APP_API_BASE_URL: http://localhost:3001
   GIT_COMMIT: ${{ github.sha }}
@@ -20,13 +20,13 @@ jobs:
             # "pactflow-example-bi-directional-provider-dredd",
             # "pactflow-example-bi-directional-provider-restassured",
             # "pactflow-example-bi-directional-provider-postman",
-            'pactflow-example-provider'
+            "pactflow-example-provider",
           ]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: "16"
       - name: Install
         run: npm i
       - name: Test
