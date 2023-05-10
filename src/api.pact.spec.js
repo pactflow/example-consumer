@@ -27,7 +27,7 @@ describe('API Pact test', () => {
 
       mockProvider
         .given('a product with ID 10 exists')
-        .uponReceiving('a request to get a product')
+        .uponReceiving('a request to get a product with ID=10')
         .withRequest({
           method: 'GET',
           path: '/product/10',
@@ -58,7 +58,7 @@ describe('API Pact test', () => {
 
       mockProvider
         .given('a product with ID 11 does not exist')
-        .uponReceiving('a request to get a product')
+        .uponReceiving('a request to get a product with ID=11')
         .withRequest({
           method: 'GET',
           path: '/product/11',
