@@ -9,7 +9,7 @@ const mockProvider = new Pact({
   consumer: 'pactflow-example-consumer',
   provider: process.env.PACT_PROVIDER
     ? process.env.PACT_PROVIDER
-    : 'pactflow-example-provider'
+    : 'pactflow-example-provider',
 });
 
 describe('API Pact test', () => {
@@ -19,7 +19,8 @@ describe('API Pact test', () => {
       const expectedProduct = {
         id: '10',
         type: 'CREDIT_CARD',
-        name: '28 Degrees'
+        name: '28 Degrees',
+        color: 'red',
       };
 
       // Uncomment to see this fail
@@ -32,15 +33,15 @@ describe('API Pact test', () => {
           method: 'GET',
           path: '/product/10',
           headers: {
-            Authorization: like('Bearer 2019-01-14T11:34:18.045Z')
-          }
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
+          },
         })
         .willRespondWith({
           status: 200,
           headers: {
-            'Content-Type': 'application/json; charset=utf-8'
+            'Content-Type': 'application/json; charset=utf-8',
           },
-          body: like(expectedProduct)
+          body: like(expectedProduct),
         });
       return mockProvider.executeTest(async (mockserver) => {
         // Act
@@ -63,11 +64,11 @@ describe('API Pact test', () => {
           method: 'GET',
           path: '/product/11',
           headers: {
-            Authorization: like('Bearer 2019-01-14T11:34:18.045Z')
-          }
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
+          },
         })
         .willRespondWith({
-          status: 404
+          status: 404,
         });
       return mockProvider.executeTest(async (mockserver) => {
         const api = new API(mockserver.url);
@@ -86,7 +87,7 @@ describe('API Pact test', () => {
       const expectedProduct = {
         id: '10',
         type: 'CREDIT_CARD',
-        name: '28 Degrees'
+        name: '28 Degrees',
       };
 
       mockProvider
@@ -96,15 +97,15 @@ describe('API Pact test', () => {
           method: 'GET',
           path: '/products',
           headers: {
-            Authorization: like('Bearer 2019-01-14T11:34:18.045Z')
-          }
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
+          },
         })
         .willRespondWith({
           status: 200,
           headers: {
-            'Content-Type': 'application/json; charset=utf-8'
+            'Content-Type': 'application/json; charset=utf-8',
           },
-          body: eachLike(expectedProduct)
+          body: eachLike(expectedProduct),
         });
       return mockProvider.executeTest(async (mockserver) => {
         const api = new API(mockserver.url);
