@@ -19,7 +19,8 @@ describe('API Pact test', () => {
       const expectedProduct = {
         id: '10',
         type: 'CREDIT_CARD',
-        name: '28 Degrees'
+        name: '28 Degrees',
+        color: "red"
       };
 
       // Uncomment to see this fail
