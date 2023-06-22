@@ -45,7 +45,7 @@ fake_ci: .env
 
 publish_pacts: .env
 	@echo "\n========== STAGE: publish pacts ==========\n"
-	@"${PACT_CLI}" publish ${PWD}/pacts --consumer-app-version ${GIT_COMMIT} --auto-detect-version-properties
+	@"${PACT_CLI}" publish ${PWD}/pacts --consumer-app-version ${GIT_COMMIT} --branch ${GIT_BRANCH}
 
 ## =====================
 ## Build/test tasks
