@@ -42,10 +42,36 @@ describe('API Pact test', () => {
           },
           body: like(expectedProduct)
         });
+
+      mockProvider
+        .given('a product with ID 11 exists')
+        .uponReceiving('a request to get a product')
+        .withRequest({
+          method: 'GET',
+          path: '/product/11',
+          headers: {
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z')
+          }
+        })
+        .willRespondWith({
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+          },
+          body: like({
+            ...expectedProduct,
+            id: 11
+          })
+        });
+
       return mockProvider.executeTest(async (mockserver) => {
         // Act
         const api = new API(mockserver.url);
         const product = await api.getProduct('10');
+        const product2 = await api.getProduct('11');
+
+        console.log(product)
+        console.log(product2)
 
         // Assert - did we get the expected response
         expect(product).toStrictEqual(new Product(expectedProduct));
