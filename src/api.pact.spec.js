@@ -2,6 +2,8 @@ import { PactV3 } from '@pact-foundation/pact';
 import { API } from './api';
 import { MatchersV3 } from '@pact-foundation/pact';
 import { Product } from './product';
+import { User } from './user';
+
 const { eachLike, like } = MatchersV3;
 const Pact = PactV3;
 
@@ -114,6 +116,44 @@ describe('API Pact test', () => {
 
         // assert that we got the expected response
         expect(products).toStrictEqual([new Product(expectedProduct)]);
+        return;
+      });
+    });
+  });
+  describe('retrieving user', () => {
+    test('user exists', async () => {
+      // set up Pact interactions
+      const expectedUser = {
+        id: '1',
+        email: 'user@mxmv.uk',
+        name: 'user',
+        password: 'hunter2',
+      }
+      mockProvider
+        .given('user exists')
+        .uponReceiving('a request to get user 1')
+        .withRequest({
+          method: 'GET',
+          path: '/user/1',
+          headers: {
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z')
+          }
+        })
+        .willRespondWith({
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+          },
+          body: like(expectedUser)
+        });
+      return mockProvider.executeTest(async (mockserver) => {
+        const api = new API(mockserver.url);
+
+        // make request to Pact mock server
+        const user = await api.getUser(1);
+
+        // assert that we got the expected response
+        expect(user).toStrictEqual(new User(expectedUser));
         return;
       });
     });

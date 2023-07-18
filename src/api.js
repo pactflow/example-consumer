@@ -1,6 +1,7 @@
 const axios = require('axios').default;
 const adapter = require('axios/lib/adapters/http');
 import { Product } from './product';
+import { User } from './user';
 
 axios.defaults.adapter = adapter;
 
@@ -44,6 +45,16 @@ export class API {
         }
       })
       .then((r) => new Product(r.data));
+  }
+
+  async getUser(id) {
+    return axios
+      .get(this.withPath('/user/' + id), {
+        headers: {
+          Authorization: this.generateAuthToken()
+        }
+      })
+      .then((r) => new User(r.data));
   }
 }
 
