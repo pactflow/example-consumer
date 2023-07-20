@@ -31,7 +31,8 @@ export class API {
     return axios
       .get(this.withPath('/products'), {
         headers: {
-          Authorization: this.generateAuthToken()
+          Authorization: this.generateAuthToken(),
+          'X-Authorization': this.generateAuthToken()
         }
       })
       .then((r) => r.data.map((p) => new Product(p)));
@@ -59,5 +60,5 @@ export class API {
 }
 
 export default new API(
-  process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001'
+  process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080'
 );

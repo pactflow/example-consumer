@@ -7,7 +7,7 @@ on:
 env:
   PACT_BROKER_BASE_URL: https://mxmv.pactflow.io
   PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
-  REACT_APP_API_BASE_URL: http://localhost:3001
+  REACT_APP_API_BASE_URL: http://localhost:8080
   GIT_COMMIT: ${{ github.sha }}
   GIT_REF: ${{ github.ref }}
 
