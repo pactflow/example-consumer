@@ -34,8 +34,8 @@ describe('API Pact test', () => {
           method: 'GET',
           path: '/product/10',
           headers: {
-            'X-Authorization': like('Bearer 2019-01-14T11:34:18.045Z'),
-            Authorization: like('Bearer 2019-01-14T11:34:18.045Z')
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
+            'x-authorization': like('Bearer 2019-01-14T11:34:18.045Z')
           }
         })
         .willRespondWith({
@@ -66,8 +66,8 @@ describe('API Pact test', () => {
           method: 'GET',
           path: '/product/11',
           headers: {
-            'X-Authorization': like('Bearer 2019-01-14T11:34:18.045Z'),
-            Authorization: like('Bearer 2019-01-14T11:34:18.045Z')
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
+            'x-authorization': like('Bearer 2019-01-14T11:34:18.045Z')
           }
         })
         .willRespondWith({
@@ -100,8 +100,8 @@ describe('API Pact test', () => {
           method: 'GET',
           path: '/products',
           headers: {
-            'X-Authorization': like('Bearer 2019-01-14T11:34:18.045Z'),
-            Authorization: like('Bearer 2019-01-14T11:34:18.045Z')
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
+            'x-authorization': like('Bearer 2019-01-14T11:34:18.045Z')
           }
         })
         .willRespondWith({
@@ -139,8 +139,8 @@ describe('API Pact test', () => {
           method: 'GET',
           path: '/user/1',
           headers: {
-            'X-Authorization': like('Bearer 2019-01-14T11:34:18.045Z'),
-            Authorization: like('Bearer 2019-01-14T11:34:18.045Z')
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
+            'x-authorization': like('Bearer 2019-01-14T11:34:18.045Z')
           }
         })
         .willRespondWith({
