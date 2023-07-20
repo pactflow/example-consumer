@@ -31,7 +31,7 @@ export class API {
     return axios
       .get(this.withPath('/products'), {
         headers: {
-          Authorization: this.generateAuthToken(),
+          // Authorization: this.generateAuthToken(),
           'x-authorization': this.generateAuthToken()
         }
       })
@@ -42,7 +42,7 @@ export class API {
     return axios
       .get(this.withPath('/product/' + id), {
         headers: {
-          Authorization: this.generateAuthToken(),
+          // Authorization: this.generateAuthToken(),
           'x-authorization': this.generateAuthToken()
         }
       })
@@ -53,7 +53,7 @@ export class API {
     return axios
       .get(this.withPath('/user/' + id), {
         headers: {
-          Authorization: this.generateAuthToken(),
+          // Authorization: this.generateAuthToken(),
           'x-authorization': this.generateAuthToken()
         }
       })
