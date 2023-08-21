@@ -6,7 +6,6 @@ on:
 
 env:
   PACT_BROKER_BASE_URL: ${{ secrets.PACT_BROKER_BASE_URL }}
-  PACT_PROVIDER: ${{ vars.PACT_PROVIDER }}
   PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
   REACT_APP_API_BASE_URL: http://localhost:3001
   GIT_COMMIT: ${{ github.sha }}
@@ -18,7 +17,7 @@ jobs:
     strategy:
       matrix:
         pact_provider: [
-            # "pactflow-example-bi-directional-provider-dredd",
+            "pactflow-example-bi-directional-provider-dredd",
             # "pactflow-example-bi-directional-provider-restassured",
             # "pactflow-example-bi-directional-provider-postman",
             'pactflow-example-provider'
