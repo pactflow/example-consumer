@@ -47,14 +47,14 @@ npm run start
 **Software**:
 
 * Tools listed at: https://docs.pactflow.io/docs/workshops/ci-cd/set-up-ci/prerequisites/
-* A pactflow.io account with an valid [API token](https://docs.pactflow.io/docs/getting-started/#configuring-your-api-token)
+* A pactflow.io account with an valid [API token](https://docs.pactflow.io/#configuring-your-api-token)
 
 
 #### Environment variables
 
 To be able to run some of the commands locally, you will need to export the following environment variables into your shell:
 
-* `PACT_BROKER_TOKEN`: a valid [API token](https://docs.pactflow.io/docs/getting-started/#configuring-your-api-token) for PactFlow
+* `PACT_BROKER_TOKEN`: a valid [API token](https://docs.pactflow.io/#configuring-your-api-token) for PactFlow
 * `PACT_BROKER_BASE_URL`: a fully qualified domain name with protocol to your pact broker e.g. https://testdemo.pactflow.io
 
 ### Usage
