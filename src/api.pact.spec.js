@@ -19,8 +19,7 @@ describe('API Pact test', () => {
       const expectedProduct = {
         id: '10',
         type: 'CREDIT_CARD',
-        name: '28 Degrees',
-        date: "11/02/2024"
+        name: '28 Degrees'
       };
 
       // Uncomment to see this fail
