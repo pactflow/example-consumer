@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 96
+
+{
+  "id": "10",
+  "name": "Aussie",
+  "type": "Pizza",
+  "version": "v1",
+  "price": 9.99,
+}

@@ -1,10 +1,10 @@
 const axios = require("axios").default;
 const adapter = require("axios/lib/adapters/http");
-const Product = require("./product");
 
 axios.defaults.adapter = adapter;
+axios.defaults.headers.common['Accept'] = "application/json";
 
-class API {
+export class API {
   constructor(url) {
     if (url === undefined || url === "") {
       url = process.env.REACT_APP_API_BASE_URL;
@@ -47,4 +47,10 @@ class API {
   }
 }
 
-module.exports = API
+export class Product {
+  constructor({id, name, type}) {
+    this.id = id
+    this.name = name
+    this.type = type
+  }
+}
