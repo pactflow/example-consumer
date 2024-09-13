@@ -87,3 +87,5 @@ components:
           type: string
         price:
           type: number
+        foobar:
+          type: boolean
