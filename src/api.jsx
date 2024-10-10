@@ -1,13 +1,10 @@
-const axios = require('axios').default;
-const adapter = require('axios/lib/adapters/http');
+import axios from 'axios';
 import { Product } from './product';
-
-axios.defaults.adapter = adapter;
 
 export class API {
   constructor(url) {
     if (url === undefined || url === '') {
-      url = process.env.REACT_APP_API_BASE_URL;
+      url = process.env.VITE_APP_API_BASE_URL;
     }
     if (url.endsWith('/')) {
       url = url.substr(0, url.length - 1);
@@ -48,5 +45,5 @@ export class API {
 }
 
 export default new API(
-  process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001'
+  process.env.VITE_APP_API_BASE_URL || 'http://localhost:3001'
 );
