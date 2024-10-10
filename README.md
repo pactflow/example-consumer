@@ -33,7 +33,7 @@ Open a separate terminal for the consumer.
 Before starting the consumer, create a `.env` file in the root of the project and set the URL to point to your running provider:
 
 ```bash
-REACT_APP_API_BASE_URL=http://localhost:8080
+VITE_APP_API_BASE_URL=http://localhost:8080
 ```
 
 Then run:
