@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.29.0",
+    "axios": "^1.7.9",
     "prop-types": "15.8.1",
     "react": "^18.2.0",
     "react-dom": "18.2.0",
@@ -15,9 +15,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "cross-env CI=true react-scripts test",
+    "test": "cross-env CI=true react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject",
-    "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js"
+    "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js  --transformIgnorePatterns \"node_modules/(?!axios)/\""
   },
   "eslintConfig": {
     "extends": [
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.26.3",
-    "@pact-foundation/pact": "^10.4.1",
+    "@pact-foundation/pact": "^14.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
