@@ -5,10 +5,10 @@
   "dependencies": {
     "axios": "^1.7.9",
     "prop-types": "15.8.1",
-    "react": "^18.2.0",
-    "react-dom": "18.3.1",
-    "react-router": "^7.0.0",
-    "react-router-dom": "^7.0.0",
+    "react": "^19.0.0",
+    "react-dom": "19.0.0",
+    "react-router": "^7.2.0",
+    "react-router-dom": "^7.2.0",
     "react-scripts": "5.0.1",
     "spectre.css": "^0.5.9"
   },
