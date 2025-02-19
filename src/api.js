@@ -1,8 +1,5 @@
-const axios = require('axios').default;
-const adapter = require('axios/lib/adapters/http');
+import axios from 'axios';
 import { Product } from './product';
-
-axios.defaults.adapter = adapter;
 
 export class API {
   constructor(url) {
@@ -48,5 +45,5 @@ export class API {
 }
 
 export default new API(
-  process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001'
+  process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080'
 );
