@@ -38,7 +38,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/preset-react": "7.26.3",
+    "@babel/preset-react": "7.27.1",
     "@pact-foundation/pact": "15.0.1",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.3.0",
