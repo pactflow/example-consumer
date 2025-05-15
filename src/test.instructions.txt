@@ -1,9 +1,10 @@
+* Make sure to cover happy and non-happy paths
+  * Specifically, ensure to include test cases for the positive (HTTP 200) scenario and negative scenarios, specifically the case of 400, 401 and 404
 * Use the Jest testing framework
 * Use the native Jest expect (https://jestjs.io/docs/expect) matchers such as `toEqual` and `toBeTruthy`
 * Prefer the use of the async/await pattern when using Promises
 * Use the PactV4 interface
 * Use a 3 level hierarchy for tests
-  1. Level 1 should be the API under test as a `describe` block e.g. "Product API"
-  2. Level 2 should be the endpoint as a `describe` block e.g. "GET /products/:id", "POST /products"
-  3. Level 3 should be the scenario as a `test` block e.g. "Given a valid user, returns a 200", "Given an invalid user, returns a 400"
-* Write test cases for the positive (HTTP 200) scenario and negative scenarios, specifically the case of 400, 401 and 404
+  1. Level 1 should be the API under test as a `describe` block e.g. "🧱 Product API"
+  2. Level 2 should be the endpoint as a `describe` block e.g. "🔌 GET /products/:id", "POST /products"
+  3. Level 3 should be the scenario as a `test` block e.g. "🧪 Given a valid user, returns a 200", "Given an invalid user, returns a 400"

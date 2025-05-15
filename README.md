@@ -107,9 +107,9 @@ pactflow-ai generate \
   --code ./src/product.js \
   --code ./src/api.js \
   --template ./src/pact.test.template \
-  --instructions ./src/test.instructions.txt
+  --instructions @./src/test.instructions.txt
 ```
 
 ### Running Tests
 
-* `npm run test:pact`
+* `npm t`
