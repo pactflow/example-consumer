@@ -85,7 +85,7 @@ pactflow-ai generate \
   --language typescript \
   --code ./src/product.js \
   --code ./src/api.js \
-  --template ./src/pact.test.template \
+  --template ./src/pact.test.template
 ```
 
 **With additional instructions (inline)**

@@ -6,3 +6,4 @@
   1. Level 1 should be the API under test as a `describe` block e.g. "Product API"
   2. Level 2 should be the endpoint as a `describe` block e.g. "GET /products/:id", "POST /products"
   3. Level 3 should be the scenario as a `test` block e.g. "Given a valid user, returns a 200", "Given an invalid user, returns a 400"
+* Write test cases for the positive (HTTP 200) scenario and negative scenarios, specifically the case of 400, 401 and 404
