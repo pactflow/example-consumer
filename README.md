@@ -1,28 +1,6 @@
 # Example Consumer
 
-![Build](https://github.com/pactflow/example-consumer/workflows/Build/badge.svg)
-
-[![Pact Status](https://test.pactflow.io/pacts/provider/pactflow-example-provider/consumer/pactflow-example-consumer/latest/badge.svg?label=provider)](https://test.pactflow.io/pacts/provider/pactflow-example-provider/consumer/pactflow-example-consumer/latest) (latest pact)
-
-[![Can I deploy Status](https://test.pactflow.io/pacticipants/pactflow-example-consumer/branches/master/latest-version/can-i-deploy/to-environment/production/badge)](https://test.pactflow.io/pacticipants/pactflow-example-consumer/branches/master/latest-version/can-i-deploy/to-environment/production/badge)
-
-This is an example of a Node consumer using Pact to create a consumer driven contract, and sharing it via [PactFlow](https://pactflow.io).
-
-It is using a public tenant on PactFlow, which you can access [here](https://test.pactflow.io/) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`. The latest version of the Example Consumer/Example Provider pact is published [here](https://test.pactflow.io/pacts/provider/pactflow-example-provider/consumer/pactflow-example-consumer/latest).
-
-The project uses a Makefile to simulate a very simple build pipeline with two stages - test and deploy.
-
-* Test
-  * Run tests (including the pact tests that generate the contract)
-  * Publish pacts, associating the consumer version with the name of the current branch
-  * Check if we are safe to deploy to prod (ie. has the pact content been successfully verified)
-* Deploy (only from master)
-  * Deploy app (just pretend for the purposes of this example!)
-  * Record the deployment in the Pact Broker
-
-## Usage
-
-See the [PactFlow CI/CD Workshop](https://github.com/pactflow/ci-cd-workshop).
+See the main branch for background, prerequisites and more.
 
 ### Pre-requisites
 
@@ -30,17 +8,109 @@ See the [PactFlow CI/CD Workshop](https://github.com/pactflow/ci-cd-workshop).
 
 * Tools listed at: https://docs.pactflow.io/docs/workshops/ci-cd/set-up-ci/prerequisites/
 * A pactflow.io account with an valid [API token](https://docs.pactflow.io/docs/getting-started/#configuring-your-api-token)
+* `pactflow-ai` installed 
+  * Quick install: `curl https://download.pactflow.io/ai/get.sh | sh`
+  * [Instructions](https://docs.pactflow.io/docs/ai/quick-start)
 
 #### Environment variables
 
-To be able to run some of the commands locally, you will need to export the following environment variables into your shell:
+You will need to export the following environment variables into your shell:
 
 * `PACT_BROKER_TOKEN`: a valid [API token](https://docs.pactflow.io/docs/getting-started/#configuring-your-api-token) for PactFlow
 * `PACT_BROKER_BASE_URL`: a fully qualified domain name with protocol to your pact broker e.g. https://testdemo.pactflow.io
 
-### Usage
+### AI Demo
 
-#### Pact use case
+#### Recommended arguments
+
+The best output combines the input of code + the OAD (comprehension of the system), a code template (to produce consistent output) and additional instructions (use-case specific guidance):
+```
+pactflow-ai generate \
+  --output ./src/api.pact.spec.ts \
+  --language typescript \
+  --openapi ./products.yml \
+  --endpoint "/product/{id}" \
+  --code ./src/product.js \
+  --code ./src/api.js \
+  --template ./src/pact.test.template \
+  --instructions "Write test cases for the positive (HTTP 200) scenario and negative scenarios, specifically the case of 400, 401 and 404"
+```
+
+#### Other variations
+
+**With OpenAPI + Code**
+```
+pactflow-ai generate \
+  --output ./src/api.pact.spec.ts \
+  --language typescript \
+  --openapi ./products.yml \
+  --endpoint "/products" \
+  --code ./src/product.js \
+  --code ./src/api.js
+```
+
+**With Code**
+```
+pactflow-ai generate \
+  --output ./src/api.pact.spec.ts \
+  --language typescript \
+  --code ./src/product.js \
+  --code ./src/api.js
+```
+
+**With OpenAPI**
+```
+pactflow-ai generate \
+  --output ./src/api.pact.spec.ts \
+  --language typescript \
+  --openapi ./products.yml \
+  --endpoint "/products" \
+  --code ./src/product.js \
+  --code ./src/api.js
+```
+
+**With HTTP captures**
+```
+pactflow-ai generate \
+  --request ./capture/get.request.http \
+  --response ./capture/get.response.http \
+  --language typescript \
+  --output ./src/api.pact.spec.ts
+```  
+
+**With a test template**
+```
+pactflow-ai generate \
+  --output ./src/api.pact.spec.ts \
+  --language typescript \
+  --code ./src/product.js \
+  --code ./src/api.js \
+  --template ./src/pact.test.template \
+```
+
+**With additional instructions (inline)**
+```
+pactflow-ai generate \
+  --output ./src/api.pact.spec.ts \
+  --language typescript \
+  --code ./src/product.js \
+  --code ./src/api.js \
+  --template ./src/pact.test.template \
+  --instructions "Write test cases for the positive (HTTP 200) scenario and negative scenarios, specifically the case of 400, 401 and 404"
+```
+
+**With additional instructions (as a file)**
+```
+pactflow-ai generate \
+  --output ./src/api.pact.spec.ts \
+  --language typescript \
+  --code ./src/product.js \
+  --code ./src/api.js \
+  --template ./src/pact.test.template \
+  --instructions ./src/test.instructions.txt
+```
+
+### Running Tests
 
 * `make test` - run the pact test locally
 * `make fake_ci` - run the CI process locally
