@@ -1,5 +1,7 @@
 * Make sure to cover happy and non-happy paths
   * Specifically, ensure to include test cases for the positive (HTTP 200) scenario and negative scenarios, specifically the case of 400, 401 and 404
+* Only include endpoints/properties used by the API client - do not include additional fields in the OAS that are not in the client code
+  * You can check the properties used in the Product class to help make this determination
 * Use the Jest testing framework
 * Use the native Jest expect (https://jestjs.io/docs/expect) matchers such as `toEqual` and `toBeTruthy`
 * Prefer the use of the async/await pattern when using Promises

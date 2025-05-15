@@ -29,11 +29,11 @@ pactflow-ai generate \
   --output ./src/api.pact.spec.ts \
   --language typescript \
   --openapi ./products.yml \
-  --endpoint "/product/{id}" \
+  --endpoint "**" \
   --code ./src/product.js \
   --code ./src/api.js \
   --template ./src/pact.test.template \
-  --instructions "Write test cases for the positive (HTTP 200) scenario and negative scenarios, specifically the case of 400, 401 and 404"
+  --instructions @./src/test.instructions.txt
 ```
 
 #### Other variations

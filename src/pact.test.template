@@ -11,6 +11,7 @@ describe("🧱 Thing API", () => {
     consumer: "ThingConsumer",
     provider: "ThingProvider",
     spec: SpecificationVersion.SPECIFICATION_VERSION_V4,
+    logLevel: "error",
   });
 
   // Level 2 - Describe block for the specific API endpoint
