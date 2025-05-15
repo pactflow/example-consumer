@@ -112,5 +112,4 @@ pactflow-ai generate \
 
 ### Running Tests
 
-* `make test` - run the pact test locally
-* `make fake_ci` - run the CI process locally
+* `npm run test:pact`
