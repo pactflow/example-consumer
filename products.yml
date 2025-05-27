@@ -27,9 +27,6 @@ paths:
                       # name: "pizza"
                       # version: "1.0.0"
                       # see https://github.com/apiaryio/dredd/issues/1430 for why
-        "400":
-          description: Invalid ID supplied
-          content: {}
   /product/{id}:
     get:
       summary: Find product by ID
