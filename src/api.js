@@ -1,7 +1,5 @@
 const axios = require("axios").default;
-const adapter = require("axios/lib/adapters/http");
 const { Product } = require("./product");
-axios.defaults.adapter = adapter;
 axios.defaults.headers.common["Accept"] = "application/json; charset=utf-8";
 
 export class API {
