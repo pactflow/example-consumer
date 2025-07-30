@@ -118,4 +118,78 @@ describe('API Pact test', () => {
       });
     });
   });
+  describe("DELETE /product/:id", () => {
+    test("given a valid product id, returns 204", async () => {
+      await pact
+        .addInteraction()
+        .given("a product with id 123 exists")
+        .uponReceiving("a request to delete a product")
+        .withRequest("DELETE", "/product/123", (builder) => {
+          builder.headers({
+            Accept: "application/json; charset=utf-8",
+            Authorization: like("Bearer 2023-10-10T10:00:00Z"),
+          });
+        })
+        .willRespondWith(204)
+        .executeTest(async (mockserver) => {
+          const api = new API(mockserver.url);
+          const response = await api.deleteProduct("123");
+          expect(response.status).toEqual(204);
+        });
+    });
+
+    test("given an invalid ID, returns 400", async () => {
+      await pact
+        .addInteraction()
+        .given("an invalid product id is provided")
+        .uponReceiving("a request to delete a product with invalid ID")
+        .withRequest("DELETE", "/product/invalid-id", (builder) => {
+          builder.headers({
+            Accept: "application/json; charset=utf-8",
+            Authorization: like("Bearer 2023-10-10T10:00:00Z"),
+          });
+        })
+        .willRespondWith(400)
+        .executeTest(async (mockserver) => {
+          const api = new API(mockserver.url);
+          await expect(api.deleteProduct("invalid-id")).rejects.toThrow();
+        });
+    });
+
+    test("given unauthorized access, returns 401", async () => {
+      await pact
+        .addInteraction()
+        .given("the user is unauthorized")
+        .uponReceiving("a request to delete a product without authorization")
+        .withRequest("DELETE", "/product/123", (builder) => {
+          builder.headers({
+            Accept: "application/json; charset=utf-8",
+            Authorization: like("Bearer invalid-token"),
+          });
+        })
+        .willRespondWith(401)
+        .executeTest(async (mockserver) => {
+          const api = new API(mockserver.url);
+          await expect(api.deleteProduct("123")).rejects.toThrow();
+        });
+    });
+
+    test("given a non-existent product, returns 404", async () => {
+      await pact
+        .addInteraction()
+        .given("no product with id 999 exists")
+        .uponReceiving("a request to delete a non-existent product")
+        .withRequest("DELETE", "/product/999", (builder) => {
+          builder.headers({
+            Accept: "application/json; charset=utf-8",
+            Authorization: like("Bearer 2023-10-10T10:00:00Z"),
+          });
+        })
+        .willRespondWith(404)
+        .executeTest(async (mockserver) => {
+          const api = new API(mockserver.url);
+          await expect(api.deleteProduct("999")).rejects.toThrow();
+        });
+    });
+  });  
 });
