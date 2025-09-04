@@ -54,4 +54,14 @@ export class API {
         },
       })
   }
+
+  async createProduct(product) {
+    return axios
+      .post(this.withPath("/product"), product, {
+        headers: {
+          Authorization: this.generateAuthToken(),
+        },
+      })
+      .then((r) => new Product(r.data));
+  }
 }
