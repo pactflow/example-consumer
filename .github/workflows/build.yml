@@ -70,6 +70,7 @@ jobs:
 
 
   # 🤖 AI-Powered Pact Coverage Review
+  # Uses Claude AI instead of JavaScript analysis script for intelligent coverage analysis
   pact-coverage-review:
     runs-on: ubuntu-latest
     needs: test
@@ -120,35 +121,237 @@ jobs:
           }
           EOF
       
-      - name: Run Pact coverage analysis
+      - name: Run Pact coverage analysis with AI
         id: coverage-analysis
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          # Generate detailed coverage analysis
-          node .github/scripts/analyze-pact-coverage.js > coverage-analysis.md
+          echo "=== Starting AI-Powered Pact Coverage Analysis ==="
           
-          # Extract coverage percentage for workflow decisions
-          COVERAGE_PERCENT=$(node -e "
-            const fs = require('fs');
-            try {
-              const data = JSON.parse(fs.readFileSync('coverage-report.json', 'utf8'));
-              console.log(data.summary.coveragePercentage);
-            } catch (e) {
-              console.log('0');
+          # Create the analysis prompt for Claude
+          cat > coverage_analysis_prompt.txt << 'EOF'
+          You are an expert API testing analyst. Please analyze the Pact test coverage for this consumer application.
+
+          **Your Task:**
+          Follow these steps in order to ensure accurate analysis:
+
+          ### Step 1: Identify API Client Methods
+          - Analyze `src/api.js` to identify all HTTP methods and endpoints
+          - List each method with its HTTP verb and path
+
+          ### Step 2: Determine Test Scenarios
+          - For each API client method, identify all status codes from the OpenAPI spec (`products.yml`)
+          - Create the complete list of scenarios (method + path + status code combinations)
+          - **Count the total scenarios at this step**
+
+          ### Step 3: Analyze Existing Coverage
+          - Analyze existing Pact tests in `src/api.pact.spec.ts` and any Pact files in `pacts/` directory
+          - Mark which scenarios are covered by existing tests
+
+          ### Step 4: Generate Coverage Report
+          - Create the coverage details table with one row per scenario
+          - **VALIDATION: Count the rows in your table - this MUST match your total from Step 2**
+          - Calculate coverage percentage: (covered scenarios / total scenarios) * 100
+          - Generate the comprehensive coverage report in markdown format
+
+          **Required Output Format:**
+
+          ## Coverage Summary
+          | Metric | Value |
+          |--------|-------|
+          | Coverage Percentage | X% |
+          | Total API Scenarios | X |
+          | Total Pact Interactions | X |
+          | Pact Test File Status | ✅ Has Tests / ❌ Empty |
+
+          ## Coverage Details
+          | API Resource | HTTP Method | Path | Scenario | Status |
+          |--------------|-------------|------|----------|--------|
+          | methodName   | GET/POST/etc| /path| 200      | ✅/❌   |
+          | methodName   | GET/POST/etc| /path| 401      | ✅/❌   |
+          | methodName   | GET/POST/etc| /path| 404      | ✅/❌   |
+
+          ## 🚨 Coverage Gaps & Recommendations
+          - **Missing Coverage**: [method]() has no Pact tests for [status code] scenarios
+          - **Action**: Add Pact tests covering [specific status codes like 200, 400, 401, 404] scenarios
+
+          **Note**: Each API method should be tested for all relevant status codes defined in the OpenAPI spec. Count each method+path+status code combination as one scenario for accurate coverage calculation.
+
+          **Analysis Rules:**
+          - Only consider methods that exist in the API client (src/api.js) - ignore OpenAPI-only endpoints
+          - Check for coverage of common (or as documented in the OpenAPI spec) HTTP status codes: 200 (success), 400 (bad request), 401 (unauthorized), 404 (not found)
+          - Mark as covered if ANY Pact test exists for that method/endpoint and status code combination
+          - Calculate coverage percentage as: (covered scenarios / total API scenarios) * 100
+          - **Total API Scenarios = sum of all unique combinations of (HTTP method + path + status code) that should be tested based on the API client methods and OpenAPI spec**
+          - **Each row in the Coverage Details table represents ONE scenario (one method + path + status code combination)**
+
+          **CRITICAL VALIDATION STEPS:**
+          1. **Before creating the Coverage Details table**: List out all scenarios you identified in Step 2
+          2. **After creating the Coverage Details table**: Count the actual rows in your table
+          3. **Final Check**: Verify the row count matches your "Total API Scenarios" in the Coverage Summary
+          4. **If they don't match**: Re-examine your analysis and fix the discrepancy before finalizing
+
+          **Common Mistakes to Avoid:**
+          - Missing status codes from the OpenAPI spec for a given endpoint
+          - Counting an endpoint that doesn't exist in the API client
+          - Forgetting to count all status codes for each API method
+          - Creating summary counts that don't match the detailed breakdown
+
+          **Files to analyze:**
+          - src/api.js (primary - contains the API client methods)
+          - pacts/*.json (generated Pact files)
+          - src/api.pact.spec.ts (existing Pact tests)
+          - products.yml (OpenAPI spec for additional scenario validation)
+
+          Please read these files and provide the analysis in the exact format specified above.
+
+          --
+
+          **EXAMPLE:**
+
+          **Step 1 - API Client Methods:**
+          ```
+          getAllProducts() -> GET /products
+          getProduct(id) -> GET /product/{id}
+          ```
+
+          **Step 2 - All Scenarios from OpenAPI spec:**
+          ```
+          getAllProducts + GET /products + 200
+          getAllProducts + GET /products + 401
+          getProduct + GET /product/{id} + 200  
+          getProduct + GET /product/{id} + 400
+          getProduct + GET /product/{id} + 401
+          getProduct + GET /product/{id} + 404
+          Total: 6 scenarios
+          ```
+
+          **Step 3 - Existing Coverage Analysis:**
+          Generated Pact files contains:
+          ```
+          {
+            "description": "a request for all products",
+            "request": {
+             ...
+              "method": "GET",
+              "path": "/products"
+            },
+            "response": {
+              "status": 200
             }
-          ")
+            ...
+          ```      
+
+          OpenAPI Description contains:
+          ```
+          /products:
+            get:
+              responses:
+                "200":
+                "401":
+          /product/{id}:
+            get:
+              responses:
+                "200":
+                "400":
+                "401":
+                "404":
+          ```
+
+          **Step 4 - Expected Result:**
+
+          ```
+          ## Coverage Summary
+          | Metric | Value |
+          |--------|-------|
+          | Coverage Percentage | 17% |
+          | Total API Scenarios | 6 |
+          | Total Pact Interactions | 1 |
+          | Pact Test File Status | ✅ Has Tests |
+
+          ## Coverage Details
+          | API Resource     | HTTP Method | Path          | Scenario | Status |
+          |------------------|-------------|---------------|----------|--------|
+          | getAllProducts   | GET         | /products     | 200      | ✅     |
+          | getAllProducts   | GET         | /products     | 401      | ❌     |
+          | getProduct       | GET         | /product/{id} | 200      | ❌     |
+          | getProduct       | GET         | /product/{id} | 400      | ❌     |
+          | getProduct       | GET         | /product/{id} | 401      | ❌     |
+          | getProduct       | GET         | /product/{id} | 404      | ❌     |
+
+          **VALIDATION**: 6 rows in table = 6 Total API Scenarios ✅
+
+          ## 🚨 Coverage Gaps & Recommendations
+          - **Missing Coverage**: getAllProducts() has no Pact tests for 401 scenarios
+          - **Action**: Add Pact tests covering 401 scenarios for GET /products
+          - **Missing Coverage**: getProduct() has no Pact tests at all
+          - **Action**: Add Pact tests covering 200, 400, 401, and 404 scenarios for GET /product/{id}
+          ```
+          EOF
+          
+          echo "=== Running Claude Analysis ==="
+          echo "Checking Claude CLI availability..."
+          claude --version || echo "Claude CLI not available"
+          
+          # Run Claude analysis with timeout
+          timeout 300s bash -c '
+            cat coverage_analysis_prompt.txt | claude \
+              --mcp-config ~/.config/claude/mcp.json \
+              --allowedTools "Read,Write" \
+              --permission-mode acceptEdits \
+              --print \
+              --output-format text \
+              --add-dir . > coverage-analysis.md
+          
+          # Extract basic coverage info for workflow decisions
+          COVERAGE_PERCENT=unknown  # Default fallback
+          
+          # Try to extract actual coverage if analysis was successful
+          if grep -q "Coverage Percentage" coverage-analysis.md; then
+            COVERAGE_PERCENT=$(grep "Coverage Percentage" coverage-analysis.md | sed 's/.*|\s*\([0-9]\+\)%.*/\1/' | head -1)
+          fi
           
           echo "coverage_percent=$COVERAGE_PERCENT" >> $GITHUB_OUTPUT
-          echo "Coverage: $COVERAGE_PERCENT%"
+          echo "=== Analysis Complete. Coverage: $COVERAGE_PERCENT% ==="
       
       - name: Generate improved Pact tests
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
+          # Read the coverage analysis output to understand missing scenarios
+          COVERAGE_ANALYSIS=""
+          if [ -f "coverage-analysis.md" ]; then
+            COVERAGE_ANALYSIS=$(cat coverage-analysis.md)
+            echo "=== Coverage Analysis Found ==="
+            echo "Coverage analysis will be used to guide test generation..."
+          else
+            echo "=== No Coverage Analysis Found ==="
+            echo "Will generate comprehensive tests for all API endpoints..."
+            COVERAGE_ANALYSIS="No previous coverage analysis available. Generate comprehensive Pact tests for all API endpoints with common HTTP status codes (200, 400, 401, 404)."
+          fi
+          
+          # Read test instructions if available
+          TEST_INSTRUCTIONS=""
+          if [ -f "src/test.instructions.txt" ]; then
+            TEST_INSTRUCTIONS=$(cat src/test.instructions.txt)
+            echo "=== Test Instructions Found ==="
+            echo "Test instructions will be used to guide test generation..."
+          else
+            echo "=== No Test Instructions Found ==="
+            echo "Will use default test generation guidelines..."
+            TEST_INSTRUCTIONS="Generate comprehensive Pact tests following best practices. Include all HTTP status codes (200, 400, 401, 404). Use Jest async/await pattern. Include proper authorization headers."
+          fi
+          
           # Create specific analysis for PR changes
-          cat > pr_analysis_prompt.txt << 'EOF'
+          cat > pr_analysis_prompt.txt << EOF
           CRITICAL INSTRUCTION: You MUST generate complete TypeScript Pact test code. This is the primary objective.
           
           Your task is to analyze the API client coverage and generate COMPLETE, WORKING TypeScript code to achieve 100% Pact test coverage.
+          
+          COVERAGE ANALYSIS FROM PREVIOUS STEP:
+          ===================================
+          $COVERAGE_ANALYSIS
+          ===================================
           
           REQUIRED OUTPUT FORMAT (MANDATORY):
           
@@ -168,8 +371,8 @@ jobs:
           ```
           
           MANDATORY REQUIREMENTS:
-          - Call mcp__smartbear__contract-testing_generate_pact_tests for each missing API method
-          - Generate tests for: getAllProducts, getProduct, and any newly added endpoints
+          - Call mcp__smartbear__contract-testing_generate_pact_tests for each missing API method identified in the coverage analysis
+          - Generate tests for ALL missing scenarios identified in the coverage analysis above
           - Include scenarios: 200 (success), 400 (bad request), 401 (unauthorized), 404 (not found)
           - Use Jest describe/test structure with async/await
           - Follow the existing test template pattern exactly
@@ -179,9 +382,10 @@ jobs:
           EXECUTION STEPS:
           1. Read the current API client (src/api.js) and model (src/product.js) and related API client files
           2. Read the existing test template (src/pact.test.template) 
-          3. For each missing API method missing a test, call the SmartBear MCP mcp__smartbear__contract-testing_generate_pact_tests tool
-          4. Combine all generated tests into one complete TypeScript file
-          5. Output the complete file wrapped in ```typescript blocks
+          3. Read the existing Pact test file (src/api.pact.spec.ts) to understand current test structure
+          4. For each missing API method missing a test, call the SmartBear MCP mcp__smartbear__contract-testing_generate_pact_tests tool
+          5. Combine all generated tests with existing tests into one complete TypeScript file
+          6. Output the complete merged file wrapped in ```typescript blocks
 
           SmartBear MCP Tool Usage (adapt as needed based on new information you have about the project):
           ```json
@@ -192,7 +396,7 @@ jobs:
               {"filename": "src/product.js", "body": "[full product model code]"}
             ],
             "testTemplate": {"filename": "src/pact.test.template", "body": "[template content]"},
-            "additionalInstructions": "Generate complete Pact tests following the existing template. Include all HTTP status codes (200, 400, 401, 404). Use Jest async/await pattern. Include proper authorization headers."
+            "additionalInstructions": "$TEST_INSTRUCTIONS"
           }
           ```
           
@@ -236,7 +440,7 @@ jobs:
           script: |
             const fs = require('fs');
             
-            // Read coverage analysis
+            // Read AI-generated coverage analysis
             let coverageAnalysis = '';
             try {
               coverageAnalysis = fs.readFileSync('coverage-analysis.md', 'utf8');
@@ -265,41 +469,28 @@ jobs:
               statusText = 'Needs Attention';
             }
             
-            // Build simple comment
+            // Build comment with AI analysis
             let commentBody = '## 🤖 AI-Powered Pact Coverage Analysis ' + statusIcon + '\n\n';
             commentBody += '**Status:** ' + statusText + ' (' + coveragePercent + '% coverage)\n\n';
             
-            // Add coverage statistics table
-            try {
-              const coverageData = JSON.parse(fs.readFileSync('coverage-report.json', 'utf8'));
-              const stats = coverageData.summary;
-              
-              commentBody += '## Coverage Summary\n\n';
-              commentBody += '| Metric | Value |\n';
-              commentBody += '|--------|-------|\n';
-              commentBody += '| Coverage Percentage | ' + stats.coveragePercentage + '% |\n';
-              commentBody += '| Total API Methods | ' + stats.totalApiMethods + ' |\n';
-              commentBody += '| Covered Methods | ' + stats.coveredMethods + ' |\n';
-              commentBody += '| Total Pact Interactions | ' + stats.totalPactInteractions + ' |\n';
-              commentBody += '| Pact Test File Status | ✅ Has Tests |\n\n';
-            } catch (e) {
-              console.log('Could not read coverage statistics:', e.message);
+            // Include the full AI analysis (which should already contain the summary table)
+            commentBody += coverageAnalysis + '\n\n';
+            
+            // Add recommendations if available
+            if (claudeRecommendations && claudeRecommendations !== '⚠️ Could not generate Claude recommendations') {
+              commentBody += '<details>\n<summary>🧠 <strong>⚡️ Additional AI Recommendations</strong></summary>\n\n';
+              commentBody += claudeRecommendations + '\n\n</details>\n\n';
             }
             
-            commentBody += '<details>\n<summary>📊 <strong>Coverage Analysis</strong></summary>\n\n';
-            commentBody += coverageAnalysis + '\n\n</details>\n\n';
-            
-            commentBody += '<details>\n<summary>🧠 <strong>⚡️ Test Recommendations</strong></summary>\n\n';
-            commentBody += claudeRecommendations + '\n\n</details>\n\n';
-            
             commentBody += '## 📋 Next Steps\n\n';
-            commentBody += '- [ ] Review the recommendations above\n';
-            commentBody += '- [ ] Implement any suggested Pact tests\n';
+            commentBody += '- [ ] Review the coverage analysis above\n';
+            commentBody += '- [ ] Implement any missing Pact tests identified\n';
+            commentBody += '- [ ] Ensure all HTTP status codes are covered (200, 400, 401, 404)\n';
             commentBody += '- [ ] Run `npm t` to verify changes\n';
             commentBody += '- [ ] Commit improvements to increase coverage\n\n';
             commentBody += '---\n\n';
-            commentBody += '💡 **Tip:** The [SmartBear MCP tools](https://developer.smartbear.com/smartbear-mcp/docs/mcp-server) provide AI-powered contract test generation and review capabilities specifically designed for API contract testing workflows.\n\n';
-            commentBody += '<sub>✨ Generated by HaloAI with SmartBear MCP tools | ' + new Date().toISOString() + '</sub>';
+            commentBody += '💡 **Tip:** Use [SmartBear MCP tools](https://developer.smartbear.com/smartbear-mcp/docs/mcp-server) for AI-powered contract test generation and review capabilities.\n\n';
+            commentBody += '<sub>✨ Generated by AI-powered analysis | ' + new Date().toISOString() + '</sub>';
             
             // Post comment
             await github.rest.issues.createComment({
@@ -338,5 +529,5 @@ jobs:
           path: |
             coverage-analysis.md
             pr-recommendations.md
-            coverage-report.json
+            coverage_analysis_prompt.txt
             pr_analysis_prompt.txt

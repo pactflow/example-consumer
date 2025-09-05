@@ -27,6 +27,9 @@ paths:
                       # name: "pizza"
                       # version: "1.0.0"
                       # see https://github.com/apiaryio/dredd/issues/1430 for why
+        "401":
+          description: Unauthorized
+          content: {}                      
   /product/{id}:
     get:
       summary: Find product by ID
@@ -60,7 +63,7 @@ paths:
           description: Invalid ID supplied
           content: {}
         "401":
-          description: Product not found
+          description: Unauthorized
           content: {}
         "404":
           description: Product not found
