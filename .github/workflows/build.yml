@@ -294,14 +294,15 @@ jobs:
           claude --version || echo "Claude CLI not available"
           
           # Run Claude analysis with timeout
-          timeout 300s bash -c '
-            cat coverage_analysis_prompt.txt | claude \
-              --mcp-config ~/.config/claude/mcp.json \
-              --allowedTools "Read,Write" \
-              --permission-mode acceptEdits \
-              --print \
-              --output-format text \
+          timeout 300s bash -c "
+            cat coverage_analysis_prompt.txt | claude \\
+              --mcp-config ~/.config/claude/mcp.json \\
+              --allowedTools \"Read,Write\" \\
+              --permission-mode acceptEdits \\
+              --print \\
+              --output-format text \\
               --add-dir . > coverage-analysis.md
+          "
           
           # Extract basic coverage info for workflow decisions
           COVERAGE_PERCENT=unknown  # Default fallback
@@ -419,14 +420,14 @@ jobs:
           echo "=== RUNNING CLAUDE ANALYSIS ==="
           echo "Starting Claude analysis with 5-minute timeout..."
           
-          timeout 300s bash -c '
-            cat pr_analysis_prompt.txt | claude \
-              --mcp-config ~/.config/claude/mcp.json \
-              --allowedTools "Read,Write,Bash,mcp__smartbear__contract-testing_generate_pact_tests,mcp__smartbear__contract-testing_review_pact_tests,mcp__smartbear__contract-testing_get_provider_states" \
-              --permission-mode acceptEdits \
-              --print \
-              --output-format text \
-              --add-dir . > pr-recommendations.md'
+          timeout 300s bash -c "
+            cat pr_analysis_prompt.txt | claude \\
+              --mcp-config ~/.config/claude/mcp.json \\
+              --allowedTools \"Read,Write,Bash,mcp__smartbear__contract-testing_generate_pact_tests,mcp__smartbear__contract-testing_review_pact_tests,mcp__smartbear__contract-testing_get_provider_states\" \\
+              --permission-mode acceptEdits \\
+              --print \\
+              --output-format text \\
+              --add-dir . > pr-recommendations.md"
           
           echo "=== CLAUDE EXECUTION COMPLETED ==="
           echo "Final output file size: $(wc -c < pr-recommendations.md 2>/dev/null || echo '0') characters"
