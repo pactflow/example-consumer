@@ -164,9 +164,6 @@ jobs:
           | Total Pact Interactions | X |
           | Pact Test File Status | ✅ Has Tests / ❌ Empty |
 
-          <details>
-          <summary>📊 <strong>Coverage Analysis</strong></summary>
-
           ## Coverage Details
           | API Resource | HTTP Method | Path | Scenario | Status |
           |--------------|-------------|------|----------|--------|
@@ -177,8 +174,6 @@ jobs:
           ## 🚨 Coverage Gaps & Recommendations
           - **Missing Coverage**: [method]() has no Pact tests for [status code] scenarios
           - **Action**: Add Pact tests covering [specific status codes like 200, 400, 401, 404] scenarios
-
-          </details>
 
           **Note**: Each API method should be tested for all relevant status codes defined in the OpenAPI spec. Count each method+path+status code combination as one scenario for accurate coverage calculation.
 
@@ -274,9 +269,6 @@ jobs:
           | Total Pact Interactions | 1 |
           | Pact Test File Status | ✅ Has Tests |
 
-          <details>
-          <summary>📊 <strong>Coverage Analysis</strong></summary>
-
           ## Coverage Details
           | API Resource     | HTTP Method | Path          | Scenario | Status |
           |------------------|-------------|---------------|----------|--------|
@@ -294,8 +286,6 @@ jobs:
           - **Action**: Add Pact tests covering 401 scenarios for GET /products
           - **Missing Coverage**: getProduct() has no Pact tests at all
           - **Action**: Add Pact tests covering 200, 400, 401, and 404 scenarios for GET /product/{id}
-
-          </details>
           ```
           EOF
           
@@ -478,7 +468,7 @@ jobs:
             
             // Add recommendations if available
             if (claudeRecommendations && claudeRecommendations !== '⚠️ Could not generate Claude recommendations') {
-              commentBody += '<details>\n<summary>🧠 <strong>⚡️ Recommended Updates</strong></summary>\n\n';
+              commentBody += '<details>\n<summary>🧠 <strong>⚡️ Additional AI Recommendations</strong></summary>\n\n';
               commentBody += claudeRecommendations + '\n\n</details>\n\n';
             }
             
