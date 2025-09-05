@@ -307,9 +307,37 @@ jobs:
           # Extract basic coverage info for workflow decisions
           COVERAGE_PERCENT=unknown  # Default fallback
           
+          # Check if coverage-analysis.md was created and has content
+          if [ ! -f "coverage-analysis.md" ]; then
+            echo "❌ ERROR: coverage-analysis.md file was not created"
+            exit 1
+          fi
+          
+          # Check if the file is empty or too small (less than 100 bytes)
+          FILE_SIZE=$(wc -c < coverage-analysis.md)
+          if [ "$FILE_SIZE" -lt 100 ]; then
+            echo "❌ ERROR: coverage-analysis.md file is empty or too small ($FILE_SIZE bytes)"
+            echo "File contents:"
+            cat coverage-analysis.md
+            exit 1
+          fi
+          
           # Try to extract actual coverage if analysis was successful
           if grep -q "Coverage Percentage" coverage-analysis.md; then
             COVERAGE_PERCENT=$(grep "Coverage Percentage" coverage-analysis.md | sed 's/.*|\s*\([0-9]\+\)%.*/\1/' | head -1)
+            
+            # Validate that we got a numeric value
+            if ! [[ "$COVERAGE_PERCENT" =~ ^[0-9]+$ ]]; then
+              echo "❌ ERROR: Could not extract valid coverage percentage. Found: '$COVERAGE_PERCENT'"
+              echo "Coverage Percentage line found:"
+              grep "Coverage Percentage" coverage-analysis.md
+              exit 1
+            fi
+          else
+            echo "❌ ERROR: Could not find 'Coverage Percentage' in coverage analysis output"
+            echo "First 20 lines of coverage-analysis.md:"
+            head -20 coverage-analysis.md
+            exit 1
           fi
           
           echo "coverage_percent=$COVERAGE_PERCENT" >> $GITHUB_OUTPUT
