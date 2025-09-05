@@ -345,32 +345,10 @@ jobs:
           fi
           
           # Create specific analysis for PR changes
-          cat > pr_analysis_prompt.txt << EOF
+          cat > pr_analysis_prompt.txt << 'EOF'
           CRITICAL INSTRUCTION: You MUST generate complete TypeScript Pact test code. This is the primary objective.
           
           Your task is to analyze the API client coverage and generate COMPLETE, WORKING TypeScript code to achieve 100% Pact test coverage.
-          
-          COVERAGE ANALYSIS FROM PREVIOUS STEP:
-          ===================================
-          $COVERAGE_ANALYSIS
-          ===================================
-          
-          REQUIRED OUTPUT FORMAT (MANDATORY):
-          
-          1. Brief analysis (1-2 sentences)
-          
-          2. COMPLETE TYPESCRIPT FILE CONTENT:
-          
-          ```typescript
-          import { SpecificationVersion, PactV4, MatchersV3 } from "@pact-foundation/pact";
-          import { API } from "./api";
-          import { Product } from "./product";
-          
-          // [COMPLETE WORKING PACT TEST FILE CONTENT HERE]
-          // Must include ALL endpoints: e.g. getAllProducts, getProduct and any newly added endpoints
-          // Must include ALL scenarios: 200, 400, 401, 404
-          // Must be complete and ready to run
-          ```
           
           MANDATORY REQUIREMENTS:
           - Call mcp__smartbear__contract-testing_generate_pact_tests for each missing API method identified in the coverage analysis
@@ -387,10 +365,10 @@ jobs:
           3. Read the existing Pact test file (src/api.pact.spec.ts) to understand current test structure
           4. For each missing API method missing a test, call the SmartBear MCP mcp__smartbear__contract-testing_generate_pact_tests tool
           5. Combine all generated tests with existing tests into one complete TypeScript file
-          6. Output the complete merged file wrapped in ```typescript blocks
+          6. Output the complete merged file wrapped in triple backticks typescript blocks
 
           SmartBear MCP Tool Usage (adapt as needed based on new information you have about the project):
-          ```json
+          Use the following JSON structure when calling the SmartBear MCP tool:
           {
             "language": "typescript",
             "code": [
@@ -398,12 +376,22 @@ jobs:
               {"filename": "src/product.js", "body": "[full product model code]"}
             ],
             "testTemplate": {"filename": "src/pact.test.template", "body": "[template content]"},
-            "additionalInstructions": "$TEST_INSTRUCTIONS"
+            "additionalInstructions": "[test instructions will be appended below]"
           }
-          ```
           
-          CRITICAL: The output MUST contain complete TypeScript code in ```typescript blocks that can be copied directly to src/api.pact.spec.ts
+          CRITICAL: The output MUST contain complete TypeScript code in triple backticks typescript blocks that can be copied directly to src/api.pact.spec.ts
           EOF
+          
+          # Append coverage analysis to the prompt
+          echo "" >> pr_analysis_prompt.txt
+          echo "COVERAGE ANALYSIS FROM PREVIOUS STEP:" >> pr_analysis_prompt.txt
+          echo "=======================================" >> pr_analysis_prompt.txt
+          echo "$COVERAGE_ANALYSIS" >> pr_analysis_prompt.txt
+          echo "=======================================" >> pr_analysis_prompt.txt
+          echo "" >> pr_analysis_prompt.txt
+          echo "TEST INSTRUCTIONS:" >> pr_analysis_prompt.txt
+          echo "==================" >> pr_analysis_prompt.txt
+          echo "$TEST_INSTRUCTIONS" >> pr_analysis_prompt.txt
           
           echo "=== PRE-FLIGHT CHECKS ==="
           echo "Checking Claude CLI installation..."
