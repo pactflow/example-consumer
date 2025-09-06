@@ -152,15 +152,18 @@ jobs:
           
           # Try to extract actual coverage if analysis was successful
           if grep -q "Coverage Percentage" coverage-analysis.md; then
-            COVERAGE_PERCENT=$(grep "Coverage Percentage" coverage-analysis.md | sed 's/.*|\s*\([0-9]\+\)%.*/\1/' | head -1)
+            COVERAGE_PERCENT=$(grep "Coverage Percentage" coverage-analysis.md | sed 's/.*|\s*\([0-9.]\+\)%.*/\1/' | head -1)
             
-            # Validate that we got a numeric value
-            if ! [[ "$COVERAGE_PERCENT" =~ ^[0-9]+$ ]]; then
+            # Validate that we got a numeric value (including decimals)
+            if ! [[ "$COVERAGE_PERCENT" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
               echo "❌ ERROR: Could not extract valid coverage percentage. Found: '$COVERAGE_PERCENT'"
               echo "Coverage Percentage line found:"
               grep "Coverage Percentage" coverage-analysis.md
               exit 1
             fi
+            
+            # Convert to integer for workflow decisions (round down)
+            COVERAGE_PERCENT_INT=$(printf "%.0f" "$COVERAGE_PERCENT")
           else
             echo "❌ ERROR: Could not find 'Coverage Percentage' in coverage analysis output"
             echo "First 20 lines of coverage-analysis.md:"
@@ -168,7 +171,7 @@ jobs:
             exit 1
           fi
           
-          echo "coverage_percent=$COVERAGE_PERCENT" >> $GITHUB_OUTPUT
+          echo "coverage_percent=$COVERAGE_PERCENT_INT" >> $GITHUB_OUTPUT
           echo "=== Analysis Complete. Coverage: $COVERAGE_PERCENT% ==="
           cat coverage-analysis.md
       
