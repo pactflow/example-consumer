@@ -180,7 +180,7 @@ EOF
 echo "🔄 Running analysis and test generation with SmartBear MCP tools..."
 cat generalized-pact-prompt.md
 echo ""
-claude --allowedTools "Read,Write,mcp__smartbear__contract-testing_generate_pact_tests" --verbose -d --print --output-format text < generalized-pact-prompt.md > pr-recommendations.md
+claude --mcp-config ~/.config/claude/mcp.json --allowedTools "Read,Write,mcp__smartbear__contract-testing_generate_pact_tests" --print --output-format text < generalized-pact-prompt.md > pr-recommendations.md
 
 echo ""
 echo "✅ Test generation complete!"
