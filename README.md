@@ -13,7 +13,7 @@ It is using a public tenant on PactFlow, which you can access [here](https://tes
 
 ## Pactflow Onboarding
 
-To simplify the onboarding tutorial, we have created `workshop/pactflow` branch on top of the existing functionality. It's to simplify the onboarding tutorial, allowing user to publish consumer contract without the use of Makefile. If you want to do a full workshop, please refer to the `main` branch to avoid unessesary setups.
+To simplify the onboarding tutorial, we have created `workshop/pactflow` branch on top of the existing functionality. It's to simplify the onboarding tutorial, allowing user to publish consumer contract without the use of Makefile. If you want to do a full workshop, please refer to the `main` branch to avoid unnecessary setups.
 
 ### Pre-requisites
 
