@@ -10,56 +10,51 @@ This is an example of a Node consumer using Pact to create a consumer driven con
 
 It is using a public tenant on PactFlow, which you can access [here](https://test.pactflow.io/) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`. The latest version of the Example Consumer/Example Provider pact is published [here](https://test.pactflow.io/pacts/provider/pactflow-example-provider/consumer/pactflow-example-consumer/latest).
 
-The project uses a Makefile to simulate a very simple build pipeline with two stages - test and deploy.
 
-* Test
-  * Run tests (including the pact tests that generate the contract)
-  * Publish pacts, associating the consumer version with the name of the current branch
-  * Check if we are safe to deploy to prod (ie. has the pact content been successfully verified)
-* Deploy (only from master)
-  * Deploy app (just pretend for the purposes of this example!)
-  * Record the deployment in the Pact Broker
+## Pactflow Onboarding
 
-## Usage
-
-See the [PactFlow CI/CD Workshop](https://github.com/pactflow/ci-cd-workshop).
-
-## Running the application
-
-Start up the [provider](https://github.com/pactflow/example-provider/) (or another [compatible](https://docs.pactflow.io/docs/examples) provider) API by running `npm run start`.
-
-Open a separate terminal for the consumer.
-
-Before starting the consumer, create a `.env` file in the root of the project and set the URL to point to your running provider:
-
-```bash
-REACT_APP_API_BASE_URL=http://localhost:8080
-```
-
-Then run:
-
-```bash
-npm run start
-```
+To simplify the onboarding tutorial, we have created `workshop/pactflow` branch on top of the existing functionality. It's to simplify the onboarding tutorial, allowing user to publish consumer contract without the use of Makefile. If you want to do a full workshop, please refer to the `main` branch to avoid unessesary setups.
 
 ### Pre-requisites
 
 **Software**:
 
-* Tools listed at: https://docs.pactflow.io/docs/workshops/ci-cd/set-up-ci/prerequisites/
+* Git
+* Node 16
+* Docker
+* Bash shell
 * A pactflow.io account with an valid [API token](https://docs.pactflow.io/#configuring-your-api-token)
 
+### Create contract
 
-#### Environment variables
+```
+# Install dependencies
+npm ci
 
-To be able to run some of the commands locally, you will need to export the following environment variables into your shell:
+# Run  tests
+npm t
+```
+
+The contract will be generated in `/pacts` directory if the test runs successfully.
+
+
+### Publish contract
+
+We will publish contract to a [public tenant](https://test.pactflow.io) on PactFlow. To be able to do it from local environment, you will need to export the following environment variables into your shell:
 
 * `PACT_BROKER_TOKEN`: a valid [API token](https://docs.pactflow.io/#configuring-your-api-token) for PactFlow
-* `PACT_BROKER_BASE_URL`: a fully qualified domain name with protocol to your pact broker e.g. https://testdemo.pactflow.io
+* `PACT_BROKER_BASE_URL`: a fully qualified domain name with protocol of public tenant on PactFlow `https://test.pactflow.io`
 
-### Usage
+Alternatively, you can create a `.env` file at the project root folder and put the 2 variables in. ie: 
+```
+PACT_BROKER_BASE_URL=https://test.pactflow.io
+PACT_BROKER_TOKEN=<<whatever-the-token-you-found>>
+```
 
-#### Pact use case
+Once you have the environment variables setup, you can publish the contract using the following npm command
 
-* `make test` - run the pact test locally
-* `make fake_ci` - run the CI process locally
+```
+npm run publish_contracts
+```
+
+Keep an eye to the links in the command output after the contracts were published successfully. You will need it shortly to view the contract in the public tenant.

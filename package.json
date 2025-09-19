@@ -15,6 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "publish_pacts": "bash ./publish_pacts.sh",
     "test": "cross-env CI=true react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject",
     "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js  --transformIgnorePatterns \"node_modules/(?!axios)/\""
