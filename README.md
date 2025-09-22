@@ -19,17 +19,15 @@ To simplify the onboarding tutorial, we have created `workshop/pactflow` branch 
 
 **Software**:
 
-* Git
+* Git (including Git bash)
 * Node 16
-* Docker
-* Bash shell
 * A pactflow.io account with an valid [API token](https://docs.pactflow.io/#configuring-your-api-token)
 
 ### Create contract
 
 ```
 # Install dependencies
-npm ci
+npm install
 
 # Run  tests
 npm t
@@ -40,7 +38,9 @@ The contract will be generated in `/pacts` directory if the test runs successful
 
 ### Publish contract
 
-We will publish contract to a [public tenant](https://test.pactflow.io) on PactFlow. To be able to do it from local environment, you will need to export the following environment variables into your shell:
+We will publish contract to a [public tenant](https://test.pactflow.io) on PactFlow using [pact-js-cli](https://github.com/pact-foundation/pact-js-cli). This is a wrapper for [pact cli tools](https://github.com/pact-foundation/pact-standalone) and available to node scripts in package.json
+
+To be able to do it from local environment, you will need to export the following environment variables into your shell:
 
 * `PACT_BROKER_TOKEN`: a valid [API token](https://docs.pactflow.io/#configuring-your-api-token) for PactFlow
 * `PACT_BROKER_BASE_URL`: a fully qualified domain name with protocol of public tenant on PactFlow `https://test.pactflow.io`
@@ -58,3 +58,7 @@ npm run publish_contracts
 ```
 
 Keep an eye to the links in the command output after the contracts were published successfully. You will need it shortly to view the contract in the public tenant.
+
+Notes:
+
+> <strong>If you are using Windows operating system. </strong> Due to limitations of bash on Windows. The publish contracts will fail if the path to `example-consumer` folder contains spaces. A quick fix is to clone the project into C: folder without a space in the path. ie: C:\dev\example-provider
