@@ -15,7 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "publish_pacts": "bash ./publish_pacts.sh",
+    "publish_pacts": "npx pact-broker publish --auto-detect-version-properties ./pacts --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN",
     "test": "cross-env CI=true react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject",
     "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js  --transformIgnorePatterns \"node_modules/(?!axios)/\""
@@ -41,6 +41,7 @@
   "devDependencies": {
     "@babel/preset-react": "7.27.1",
     "@pact-foundation/pact": "15.0.1",
+    "@pact-foundation/pact-cli": "^16.1.2",
     "@testing-library/jest-dom": "6.8.0",
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
