@@ -51,7 +51,7 @@ PACT_BROKER_BASE_URL=https://test.pactflow.io
 PACT_BROKER_TOKEN=<<whatever-the-token-you-found>>
 ```
 
-Once you have the environment variables setup, you can publish the contract using the following npm command
+pact-broker cli will automatically pick up `PACT_BROKER_BASE_URL` and `PACT_BROKER_TOKEN` varibles and pass it to cli parameters --broker-base-url and --broker-token accordingly. Once you have the environment variables setup, you can publish the contract using the following npm command
 
 ```
 npm run publish_contracts
@@ -61,4 +61,4 @@ Keep an eye to the links in the command output after the contracts were publishe
 
 Notes:
 
-> <strong>If you are using Windows operating system. </strong> Due to limitations of bash on Windows. The publish contracts will fail if the path to `example-consumer` folder contains spaces. A quick fix is to clone the project into C: folder without a space in the path. ie: C:\dev\example-provider
+> <strong>If you are using Windows operating system. </strong> Due to limitations of bash on Windows. The publish contracts will fail if the path to `example-consumer` folder contains spaces. A quick fix is to clone the project into C: folder without a space in the path. ie: C:\dev\example-provider.

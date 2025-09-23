@@ -15,7 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "publish_pacts": "npx pact-broker publish --auto-detect-version-properties ./pacts --broker-base-url=$PACT_BROKER_BASE_URL --broker-token=$PACT_BROKER_TOKEN",
+    "publish_pacts": "npx pact-broker publish --auto-detect-version-properties ./pacts",
     "test": "cross-env CI=true react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject",
     "test:pact": "cross-env CI=true react-scripts test --testTimeout 30000 pact.spec.js  --transformIgnorePatterns \"node_modules/(?!axios)/\""
