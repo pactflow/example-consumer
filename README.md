@@ -58,7 +58,3 @@ npm run publish_contracts
 ```
 
 Keep an eye to the links in the command output after the contracts were published successfully. You will need it shortly to view the contract in the public tenant.
-
-Notes:
-
-> <strong>If you are using Windows operating system. </strong> Due to limitations of bash on Windows. The publish contracts will fail if the path to `example-consumer` folder contains spaces. A quick fix is to clone the project into C: folder without a space in the path. ie: C:\dev\example-provider.
