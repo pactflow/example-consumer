@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^1.7.9",
+    "axios": "1.12.2",
     "prop-types": "15.8.1",
-    "react": "^19.0.0",
+    "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-router": "^7.2.0",
-    "react-router-dom": "^7.2.0",
+    "react-router": "7.9.3",
+    "react-router-dom": "7.9.3",
     "react-scripts": "5.0.1",
     "spectre.css": "^0.5.9"
   },
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "7.27.1",
-    "@pact-foundation/pact": "15.0.1",
+    "@pact-foundation/pact": "16.0.0",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
