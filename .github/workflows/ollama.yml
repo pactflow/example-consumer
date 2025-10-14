@@ -1,0 +1,17 @@
+# .github/workflows/ollama.yml
+on: push
+jobs:
+  ollama:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run model
+        uses: ai-action/ollama-action@v1
+        id: model
+        with:
+          model: llama3.2
+          prompt: Explain the basics of machine learning.
+
+      - name: Print response
+        run: echo "$response"
+        env:
+          response: ${{ steps.model.outputs.response }}
