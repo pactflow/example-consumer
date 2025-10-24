@@ -7,7 +7,7 @@ on:
 env:
   PACT_BROKER_BASE_URL: ${{ vars.PACT_BROKER_BASE_URL }}
   PACT_PROVIDER: pactflow-example-provider
-  PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
+  PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_RW_TOKEN }}
   REACT_APP_API_BASE_URL: http://localhost:3001
   GIT_COMMIT: ${{ github.sha }}
   GIT_REF: ${{ github.ref }}
