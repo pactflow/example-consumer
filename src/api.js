@@ -20,7 +20,7 @@ export class API {
   }
 
   generateAuthToken() {
-    return 'Bearer ' + process.env.REACT_APP_API_TOKEN;
+    return 'Bearer ' + new Date().toISOString();
   }
 
   async getAllProducts() {
@@ -45,6 +45,5 @@ export class API {
 }
 
 export default new API(
-  process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080',
-  process.env.REACT_APP_API_TOKEN || new Date().toISOString()
+  process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080'
 );
