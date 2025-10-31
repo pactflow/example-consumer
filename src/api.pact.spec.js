@@ -18,7 +18,8 @@ describe('API Pact test', () => {
       const expectedProduct = {
         id: '10',
         type: 'CREDIT_CARD',
-        name: '28 Degrees'
+        name: '28 Degrees',
+        color: 'red'
       };
 
       // Uncomment to see this interaction fail on the provider side
@@ -97,7 +98,7 @@ describe('API Pact test', () => {
           const api = new API(mockserver.url);
           // make request to Pact mock server
           const products = await api.getAllProducts();
-          
+
           // assert that we got the expected response
           expect(products).toStrictEqual([new Product(expectedProduct)]);
           return;
