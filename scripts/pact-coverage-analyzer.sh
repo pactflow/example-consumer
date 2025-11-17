@@ -57,10 +57,24 @@ cat << 'EOF' >> detailed-prompt.md
 
 REQUIREMENTS:
 1. Fill in ALL table rows with actual data
-2. Calculate exact coverage percentage 
+2. Calculate coverage percentage as: (covered scenarios / total API scenarios) * 100
 3. List every missing test scenario
 4. Do NOT summarize - provide complete detailed output
 5. Follow the exact table format shown above
+
+**Analysis Rules:**
+- Only consider methods that exist in the API client - ignore OpenAPI-only endpoints
+- Check for coverage of common (or as documented in the OpenAPI spec) HTTP status codes: 200 (success), 400 (bad request), 401 (unauthorized), 404 (not found)
+- Mark as covered if ANY Pact test exists for that method/endpoint and status code combination
+- Calculate coverage percentage as: (covered scenarios / total API scenarios) * 100
+- **Total API Scenarios = sum of all unique combinations of (HTTP method + path + status code) that should be tested based on the API client methods and OpenAPI spec**
+- **Each row in the Coverage Details table represents ONE scenario (one method + path + status code combination)**
+
+**CRITICAL VALIDATION STEPS:**
+1. **Before creating the Coverage Details table**: List out all scenarios you identified above
+2. **After creating the Coverage Details table**: Count the actual rows in your table
+3. **Final Check**: Verify the row count matches your "Total API Scenarios" in the Coverage Summary
+4. **If they don't match**: Re-examine your analysis and fix the discrepancy before finalizing
 
 START YOUR RESPONSE WITH "## Coverage Summary"
 EOF
