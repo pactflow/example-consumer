@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import ProductPage from './ProductPage';
+import SearchPage from './SearchPage';
 import ErrorBoundary from './ErrorBoundary';
 
 const routing = (
@@ -12,6 +13,7 @@ const routing = (
       <ErrorBoundary>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/products/">
             <Route path=":id" element={<ProductPage />} />
           </Route>

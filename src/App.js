@@ -12,7 +12,8 @@ const productPropTypes = {
   product: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
+    keyWords: PropTypes.arrayOf(PropTypes.string),
   }).isRequired
 };
 
