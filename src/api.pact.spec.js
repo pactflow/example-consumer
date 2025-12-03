@@ -1,8 +1,7 @@
-import { PactV3 } from "@pact-foundation/pact";
-import { API } from "./api";
-import { MatchersV3, SpecificationVersion } from "@pact-foundation/pact";
-import { Product } from "./product";
-
+import { PactV3 } from '@pact-foundation/pact';
+import { API } from './api';
+import { MatchersV3 } from '@pact-foundation/pact';
+import { Product } from './product';
 const { eachLike, like } = MatchersV3;
 const Pact = PactV3;
 
