@@ -7,7 +7,7 @@
     "prop-types": "15.8.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-router": "7.11.0",
+    "react-router": "7.12.0",
     "react-router-dom": "7.11.0",
     "react-scripts": "5.0.1",
     "spectre.css": "^0.5.9"
