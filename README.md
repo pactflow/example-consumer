@@ -20,46 +20,70 @@ The project uses a Makefile to simulate a very simple build pipeline with two st
   * Deploy app (just pretend for the purposes of this example!)
   * Record the deployment in the Pact Broker
 
+## Tech Stack
+
+| Concern          | Tool       |
+| ---------------- | ---------- |
+| Build            | Vite       |
+| Language         | TypeScript |
+| Test runner      | Vitest     |
+| Linter/formatter | Biome      |
+| UI framework     | React      |
+
+## Prerequisites
+
+**Node.js ≥ 24** is required.
+
+Other tools: see https://docs.pactflow.io/docs/workshops/ci-cd/set-up-ci/prerequisites/
+
+A [PactFlow](https://pactflow.io) account with a valid [API token](https://docs.pactflow.io/#configuring-your-api-token).
+
 ## Usage
 
 See the [PactFlow CI/CD Workshop](https://github.com/pactflow/ci-cd-workshop).
 
 ## Running the application
 
-Start up the [provider](https://github.com/pactflow/example-provider/) (or another [compatible](https://docs.pactflow.io/docs/examples) provider) API by running `npm run start`.
+Start up the [provider](https://github.com/pactflow/example-provider/) (or another [compatible](https://docs.pactflow.io/docs/examples) provider) API.
 
 Open a separate terminal for the consumer.
 
-Before starting the consumer, create a `.env` file in the root of the project and set the URL to point to your running provider:
+Before starting the consumer, create a `.env` file in the root of the project (use `.env.example` as a template) and set the URL to point to your running provider:
 
 ```bash
-REACT_APP_API_BASE_URL=http://localhost:8080
+VITE_API_BASE_URL=http://localhost:8080
 ```
 
 Then run:
 
 ```bash
-npm run start
+npm run dev
 ```
 
-### Pre-requisites
+## Scripts
 
-**Software**:
+| Script               | Description                            |
+| -------------------- | -------------------------------------- |
+| `npm run dev`        | Start the Vite dev server on port 3000 |
+| `npm run build`      | Production build (output: `build/`)    |
+| `npm run preview`    | Preview the production build           |
+| `npm test`           | Run all tests with Vitest              |
+| `npm run test:pact`  | Run pact tests only                    |
+| `npm run type-check` | TypeScript type checking (no emit)     |
+| `npm run lint`       | Biome lint                             |
+| `npm run format`     | Biome format check                     |
+| `npm run check`      | Biome lint + format check              |
+| `npm run check:fix`  | Auto-fix all Biome issues              |
 
-* Tools listed at: https://docs.pactflow.io/docs/workshops/ci-cd/set-up-ci/prerequisites/
-* A pactflow.io account with an valid [API token](https://docs.pactflow.io/#configuring-your-api-token)
+## Environment variables
 
+| Variable               | Description                                                     |
+| ---------------------- | --------------------------------------------------------------- |
+| `VITE_API_BASE_URL`    | Base URL of the provider API (default: `http://localhost:8080`) |
+| `PACT_BROKER_TOKEN`    | Valid API token for PactFlow                                    |
+| `PACT_BROKER_BASE_URL` | Fully qualified domain with protocol to your pact broker        |
 
-#### Environment variables
+## Pact use cases
 
-To be able to run some of the commands locally, you will need to export the following environment variables into your shell:
-
-* `PACT_BROKER_TOKEN`: a valid [API token](https://docs.pactflow.io/#configuring-your-api-token) for PactFlow
-* `PACT_BROKER_BASE_URL`: a fully qualified domain name with protocol to your pact broker e.g. https://testdemo.pactflow.io
-
-### Usage
-
-#### Pact use case
-
-* `make test` - run the pact test locally
-* `make fake_ci` - run the CI process locally
+* `make test` — run the pact test locally
+* `make fake_ci` — run the CI process locally
