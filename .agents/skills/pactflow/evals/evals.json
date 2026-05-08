@@ -1,0 +1,181 @@
+{
+  "skill_name": "pactflow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just got access to a PactFlow account at myorg.pactflow.io. How do I get the contract-testing tools working in Claude Code? Walk me through the full setup.",
+      "expected_output": "Step-by-step setup guide covering: getting a PactFlow API token, installing/configuring the SmartBear MCP server for Claude Code, setting the required environment variables (PACT_BROKER_BASE_URL, PACT_BROKER_TOKEN), and verifying the connection works.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "mentions_smartbear_mcp_package",
+          "description": "Response mentions the @smartbear/mcp npm package specifically (not a generic custom MCP server the user must build)",
+          "type": "contains",
+          "value": "@smartbear/mcp"
+        },
+        {
+          "name": "covers_pact_broker_base_url",
+          "description": "Response covers the PACT_BROKER_BASE_URL environment variable",
+          "type": "contains",
+          "value": "PACT_BROKER_BASE_URL"
+        },
+        {
+          "name": "covers_pact_broker_token",
+          "description": "Response covers the PACT_BROKER_TOKEN environment variable",
+          "type": "contains",
+          "value": "PACT_BROKER_TOKEN"
+        },
+        {
+          "name": "covers_api_token_step",
+          "description": "Response includes step to get PactFlow API token from settings page",
+          "type": "llm_judge",
+          "value": "The response explains how to get a PactFlow API token from the PactFlow settings page or equivalent"
+        },
+        {
+          "name": "covers_verification_step",
+          "description": "Response includes a step to verify the connection actually works",
+          "type": "llm_judge",
+          "value": "The response includes a concrete step to verify or test that the MCP connection is working (e.g. run a command, ask Claude something, use inspector)"
+        },
+        {
+          "name": "no_custom_server_required",
+          "description": "Response does NOT tell user to build a custom MCP server from scratch as the primary path",
+          "type": "llm_judge",
+          "value": "The response does NOT tell the user they need to build their own custom MCP server from scratch as the primary/recommended approach. It uses an existing package like @smartbear/mcp instead."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our can-i-deploy check is failing in CI before we deploy the OrderService to production. The error says 'There is no verified pact between version abc123 of OrderService and the version of PaymentService currently deployed to production.' We're using branches and environments. How do I investigate and fix this?",
+      "expected_output": "Explanation of why can-i-deploy fails, how to use contract-testing_matrix to investigate, what consumer version selectors to check, and concrete steps to resolve: either deploy the provider with matching verification, or ensure deployedOrReleased selector is set on the provider.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "explains_matrix",
+          "description": "Response explains the Pact Matrix concept and how it relates to the failure",
+          "type": "llm_judge",
+          "value": "The response explains the Pact Matrix (the table of consumer-provider version pairs with verification results) and why it's the key thing to check"
+        },
+        {
+          "name": "mentions_deployed_or_released_selector",
+          "description": "Response mentions the deployedOrReleased consumer version selector as a potential fix",
+          "type": "contains",
+          "value": "deployedOrReleased"
+        },
+        {
+          "name": "covers_investigation_steps",
+          "description": "Response gives specific steps to investigate (not just the fix)",
+          "type": "llm_judge",
+          "value": "The response gives concrete investigation steps to diagnose the root cause (e.g. check the matrix, look at verification results, check what version is deployed in production)"
+        },
+        {
+          "name": "covers_fix_steps",
+          "description": "Response gives concrete steps to fix the problem",
+          "type": "llm_judge",
+          "value": "The response gives concrete, actionable steps to fix the failing can-i-deploy check"
+        },
+        {
+          "name": "covers_publish_verification_results",
+          "description": "Response mentions publishing verification results from the provider",
+          "type": "llm_judge",
+          "value": "The response mentions ensuring that provider verification results are published back to the broker (publishVerificationResult, providerVersion, or equivalent)"
+        },
+        {
+          "name": "mentions_webhook_or_trigger",
+          "description": "Response mentions webhooks or triggering provider CI to verify the consumer pact",
+          "type": "llm_judge",
+          "value": "The response mentions using webhooks or triggering the provider's CI pipeline to verify the consumer's pact as a resolution or prevention step"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I need to write Pact consumer tests in JavaScript for a REST API client that calls GET /orders/:id and POST /orders. The provider is called OrderAPI, my consumer is CheckoutApp. The GET response has an optional discount field that's sometimes null. Show me the full test file and the provider state handlers the backend team needs.",
+      "expected_output": "Complete JavaScript consumer test file using @pact-foundation/pact with proper matchers (like, eachLike, term), two interactions (GET and POST), two separate interactions for the optional discount field (present vs absent via different provider states), and matching provider state handler code.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "complete_consumer_test_file",
+          "description": "Response includes a complete, runnable consumer test file (not just snippets)",
+          "type": "llm_judge",
+          "value": "The response includes a complete consumer test file with imports, provider setup, and multiple interactions — not just code snippets"
+        },
+        {
+          "name": "uses_type_matchers",
+          "description": "Response uses like() or eachLike() type matchers rather than exact values for all fields",
+          "type": "llm_judge",
+          "value": "The consumer test uses type matchers like like() or eachLike() for response fields rather than exact value matching everywhere"
+        },
+        {
+          "name": "two_interactions_for_optional_discount",
+          "description": "Response uses two separate interactions (one with discount, one without) rather than an inline nullable matcher",
+          "type": "llm_judge",
+          "value": "The response uses two separate pact interactions to handle the optional discount field: one interaction where discount is present (non-null) and one where it is null/absent, differentiated by provider states — NOT a single interaction with an inline nullable or optional matcher"
+        },
+        {
+          "name": "includes_provider_state_handlers",
+          "description": "Response includes provider state handler code (stateHandlers object) for the backend team",
+          "type": "llm_judge",
+          "value": "The response includes concrete provider state handler code for the OrderAPI backend team to implement, with stateHandlers matching the state names used in the consumer test"
+        },
+        {
+          "name": "provider_verification_includes_deployed_or_released",
+          "description": "The provider verification config includes the deployedOrReleased: true consumer version selector",
+          "type": "llm_judge",
+          "value": "The provider verification setup includes { deployedOrReleased: true } as one of the consumerVersionSelectors (not just mainBranch or matchingBranch)"
+        },
+        {
+          "name": "provider_verification_enables_pending",
+          "description": "The provider verification config includes enablePending: true",
+          "type": "llm_judge",
+          "value": "The provider verification setup includes enablePending: true so new consumer interactions don't break the provider's CI build"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "We have a Kafka consumer in Java that reads order events from a topic. How do I write a Pact message test for it? I want to make sure the consumer can handle the message structure the producer sends.",
+      "expected_output": "Complete Java JUnit5 message consumer test using PactConsumerTestExt with ProviderType.ASYNCH, PactDslJsonBody body definition, and matching provider (producer) verification test using @PactVerifyProvider annotation. Should explain the hexagonal architecture pattern for message pact testing.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "uses_pact_consumer_test_ext",
+          "description": "Consumer test uses @ExtendWith(PactConsumerTestExt.class) or equivalent JUnit5 extension",
+          "type": "llm_judge",
+          "value": "The consumer test uses PactConsumerTestExt (the JUnit5 extension for Pact consumer tests) via @ExtendWith annotation"
+        },
+        {
+          "name": "uses_asynch_provider_type",
+          "description": "Test specifies ProviderType.ASYNCH (not default HTTP pact type)",
+          "type": "contains",
+          "value": "ASYNCH"
+        },
+        {
+          "name": "includes_consumer_test",
+          "description": "Response includes a complete consumer-side message test",
+          "type": "llm_judge",
+          "value": "The response includes a complete Java consumer test that defines the expected message structure and verifies the consumer handler can process it"
+        },
+        {
+          "name": "includes_provider_verification",
+          "description": "Response includes provider-side verification using @PactVerifyProvider",
+          "type": "llm_judge",
+          "value": "The response includes provider-side verification code with @PactVerifyProvider annotation (or equivalent) to prove the producer can generate the expected message"
+        },
+        {
+          "name": "explains_hexagonal_architecture",
+          "description": "Response explains the hexagonal architecture / adapter-port pattern for message pact testing",
+          "type": "llm_judge",
+          "value": "The response explains or references the hexagonal architecture pattern: that the Pact test exercises the message handler (the Port) directly, bypassing the Kafka transport layer (the Adapter)"
+        },
+        {
+          "name": "uses_message_pact_builder_or_dsl",
+          "description": "Response uses MessagePactBuilder, PactDslJsonBody, or equivalent DSL for defining the message body",
+          "type": "llm_judge",
+          "value": "The response uses MessagePactBuilder, PactDslJsonBody, or an equivalent DSL to define the expected message body with type matchers"
+        }
+      ]
+    }
+  ]
+}

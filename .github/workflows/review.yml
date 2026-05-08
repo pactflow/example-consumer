@@ -1,0 +1,24 @@
+name: AI PR Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install GitHub Copilot CLI
+        run: npm install -g @githubnext/github-copilot-cli
+
+      - name: Run Custom Agent Review
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Authenticate and invoke the custom agent
+          # 'reviewer' matches the filename 'reviewer.agent.md'
+          gh copilot agent "Review this PR: ${{ github.event.pull_request.html_url }}" \
+            --agent reviewer \
+            --non-interactive
