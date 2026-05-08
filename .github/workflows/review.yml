@@ -19,6 +19,5 @@ jobs:
         run: |
           # Authenticate and invoke the custom agent
           # 'reviewer' matches the filename 'reviewer.agent.md'
-          gh copilot agent "Review this PR: ${{ github.event.pull_request.html_url }}" \
-            --agent reviewer \
-            --non-interactive
+          gh copilot -p "Review this PR: ${{ github.event.pull_request.html_url }}" \
+            --agent reviewer
