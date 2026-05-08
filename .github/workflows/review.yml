@@ -15,7 +15,7 @@ jobs:
 
       - name: Run Custom Agent Review
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COPILOT_GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           # Authenticate and invoke the custom agent
           # 'reviewer' matches the filename 'reviewer.agent.md'
