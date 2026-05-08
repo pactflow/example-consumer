@@ -32,3 +32,6 @@ Total coverage: 80% (4 out of 5 scenarios covered)
 ```
 
 After posting your findings, if you identify significant gaps in coverage, create a todo list of tasks to address these gaps. 
+
+Write the details to summary.md" --allow-tool='shell(git:*)' --allow-tool=write --no-ask-user
+    cat summary.md >> "$GITHUB_STEP_SUMMARY"

@@ -16,7 +16,13 @@ jobs:
       - name: Run Custom Agent Review
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Authenticate and invoke the custom agent
           # 'reviewer' matches the filename 'reviewer.agent.md'
-          copilot -p "Review this PR: ${{ github.event.pull_request.html_url }}" --agent reviewer
+          copilot -p "Review this PR: ${{ github.event.pull_request.html_url }}. Write the details to summary.md" \
+            --allow-tool='shell(git:*)' \
+            --allow-tool=write \
+            --no-ask-user \
+            --agent reviewer
+          gh pr comment "${{ github.event.pull_request.html_url }}" --body-file summary.md
