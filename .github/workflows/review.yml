@@ -27,5 +27,29 @@ jobs:
             --allow-tool='shell(git:*)' \
             --allow-tool=write \
             --no-ask-user \
-            --agent reviewer > summary.md
-          gh pr comment "${{ github.event.pull_request.html_url }}" --body-file summary.md
+            --agent reviewer > raw_summary.md
+          
+          # Strip everything before "Contract Testing Review"
+          sed -n '/## Contract Testing Review/,$p' raw_summary.md > summary.md
+          
+          # Find existing comment from github-actions bot
+          COMMENT_ID=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+            --jq '.[] | select(.user.login=="github-actions[bot]" and (.body | contains("Contract Testing Review"))) | .id' \
+            | head -n 1)
+          
+          # Update existing comment or create new one
+          if [ -n "$COMMENT_ID" ]; then
+            echo "Updating existing comment $COMMENT_ID"
+            gh api \
+              --method PATCH \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "/repos/${{ github.repository }}/issues/comments/$COMMENT_ID" \
+              -f body="$(cat summary.md)"
+          else
+            echo "Creating new comment"
+            gh pr comment "${{ github.event.pull_request.html_url }}" --body-file summary.md
+          fi
