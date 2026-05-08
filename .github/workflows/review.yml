@@ -2,6 +2,9 @@ name: AI PR Review
 on:
   pull_request:
     types: [opened, synchronize]
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   review:
@@ -20,9 +23,9 @@ jobs:
         run: |
           # Authenticate and invoke the custom agent
           # 'reviewer' matches the filename 'reviewer.agent.md'
-          copilot -p "Review this PR: ${{ github.event.pull_request.html_url }}. Write the details to summary.md" \
+          copilot -p "Review this PR: ${{ github.event.pull_request.html_url }}. Return only markdown for the review summary." \
             --allow-tool='shell(git:*)' \
             --allow-tool=write \
             --no-ask-user \
-            --agent reviewer
+            --agent reviewer > summary.md
           gh pr comment "${{ github.event.pull_request.html_url }}" --body-file summary.md
