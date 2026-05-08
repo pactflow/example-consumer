@@ -10,8 +10,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install GitHub Copilot CLI
-        run: npm install -g @githubnext/github-copilot-cli
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
 
       - name: Run Custom Agent Review
         env:
@@ -19,5 +19,4 @@ jobs:
         run: |
           # Authenticate and invoke the custom agent
           # 'reviewer' matches the filename 'reviewer.agent.md'
-          gh copilot -p "Review this PR: ${{ github.event.pull_request.html_url }}" \
-            --agent reviewer
+          copilot -p "Review this PR: ${{ github.event.pull_request.html_url }}" --agent reviewer
