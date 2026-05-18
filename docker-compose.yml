@@ -1,0 +1,31 @@
+version: '3.6'
+services:
+  example-consumer:
+    build:
+      context: ./
+    environment:
+      REACT_APP_API_BASE_URL: http://localhost:8080
+    volumes:
+      - pacts_data:/test/pacts
+    # command: tail -f /dev/null
+    command: make test
+    platform: linux/amd64
+
+  pact-broker-cli:
+    image: pactfoundation/pact-cli:latest-multi
+    platform: linux/amd64
+    depends_on:
+      - example-consumer
+    environment:
+      PACT_BROKER_BASE_URL: ${PACT_BROKER_BASE_URL}
+      PACT_BROKER_TOKEN: ${PACT_BROKER_TOKEN}
+      PACT_CONSUMER_BRANCH: ${PACT_CONSUMER_BRANCH}
+      PACT_CONSUMER_APP_VERSION: ${PACT_CONSUMER_APP_VERSION}
+    volumes:
+      - pacts_data:/pact/pacts
+    # command: tail -f /dev/null
+    command: |
+      pact-broker publish pacts --branch=$PACT_CONSUMER_BRANCH --consumer-app-version=$PACT_CONSUMER_APP_VERSION
+
+volumes:
+  pacts_data:
