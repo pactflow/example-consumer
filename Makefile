@@ -6,6 +6,7 @@
 # It's set as a secure environment variable in the .travis.yml file
 GITHUB_ORG="pactflow"
 PACTICIPANT="pactflow-example-consumer"
+PACT_PROVIDER?=pactflow-example-provider
 GITHUB_WEBHOOK_UUID := "04510dc1-7f0a-4ed2-997d-114bfa86f8ad"
 PACT_CLI="docker run --rm -v ${PWD}:${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli"
 
@@ -18,12 +19,19 @@ ENVIRONMENT?=production
 ifeq ($(GIT_BRANCH),master)
 	ENVIRONMENT=production
 	DEPLOY_TARGET=deploy
+	# On master: verify against what is deployed in production
+	CID_FLAGS=--to-environment $(ENVIRONMENT)
 else
 	ifeq ($(GIT_BRANCH),test)
 		ENVIRONMENT=test
 		DEPLOY_TARGET=deploy
+		CID_FLAGS=--to-environment $(ENVIRONMENT)
 	else
 		DEPLOY_TARGET=no_deploy
+		# On feature branches: verify against the provider's main branch,
+		# not a deployed environment. This ensures PRs get fast feedback
+		# without requiring the provider to already be in production.
+		CID_FLAGS=--pacticipant $(PACT_PROVIDER) --latest --branch main
 	endif
 endif
 
@@ -72,7 +80,7 @@ can_i_deploy: .env
 	@"${PACT_CLI}" broker can-i-deploy \
 	  --pacticipant ${PACTICIPANT} \
 	  --version ${GIT_COMMIT} \
-	  --to-environment ${ENVIRONMENT} \
+	  ${CID_FLAGS} \
 	  --retry-while-unknown 30 \
 	  --retry-interval 10
 
