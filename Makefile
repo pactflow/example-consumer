@@ -28,10 +28,10 @@ else
 		CID_FLAGS=--to-environment $(ENVIRONMENT)
 	else
 		DEPLOY_TARGET=no_deploy
-		# On feature branches: verify against the provider's main branch,
+		# On feature branches: verify against the provider's master branch,
 		# not a deployed environment. This ensures PRs get fast feedback
 		# without requiring the provider to already be in production.
-		CID_FLAGS=--pacticipant $(PACT_PROVIDER) --latest --branch main
+		CID_FLAGS=--pacticipant $(PACT_PROVIDER) --latest --branch master
 	endif
 endif
 
