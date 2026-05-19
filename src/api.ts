@@ -33,6 +33,17 @@ export class API {
       })
       .then((r) => new Product(r.data));
   }
+
+  deleteProduct(id: string): Promise<Product> {
+    return axios
+      .delete<ProductData>(`/product/${id}`, {
+        baseURL: this.baseURL,
+        headers: {
+          Authorization: this.generateAuthToken(),
+        },
+      })
+      .then((r) => new Product(r.data));
+  }
 }
 
 export default new API(import.meta.env.VITE_API_BASE_URL);
