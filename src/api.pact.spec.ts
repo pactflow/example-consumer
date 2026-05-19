@@ -109,4 +109,58 @@ describe("API Pact test", () => {
         });
     });
   });
+
+  describe("deleting a product", () => {
+    it("ID 10 exists", async () => {
+      const expectedProduct = {
+        id: "10",
+        type: "CREDIT_CARD",
+        name: "28 Degrees",
+      };
+
+      await mockProvider
+        .addInteraction()
+        .given("a product with ID 10 exists")
+        .uponReceiving("a request to delete a product")
+        .withRequest("DELETE", "/product/10", (builder) => {
+          builder.headers({
+            Authorization: like("Bearer 2019-01-14T11:34:18.045Z"),
+          });
+        })
+        .willRespondWith(200, (builder) => {
+          builder.headers({
+            "Content-Type": "application/json; charset=utf-8",
+          });
+          builder.jsonBody(like(expectedProduct));
+        })
+        .executeTest(async (mockserver) => {
+          const api = new API(mockserver.url);
+          const product = await api.deleteProduct("10");
+
+          expect(product).toStrictEqual(new Product(expectedProduct));
+          return;
+        });
+    });
+
+    it("product does not exist", async () => {
+      await mockProvider
+        .addInteraction()
+        .given("a product with ID 11 does not exist")
+        .uponReceiving("a request to delete a product")
+        .withRequest("DELETE", "/product/11", (builder) => {
+          builder.headers({
+            Authorization: like("Bearer 2019-01-14T11:34:18.045Z"),
+          });
+        })
+        .willRespondWith(404)
+        .executeTest(async (mockserver) => {
+          const api = new API(mockserver.url);
+
+          await expect(api.deleteProduct("11")).rejects.toThrow(
+            "Request failed with status code 404"
+          );
+          return;
+        });
+    });
+  });
 });
